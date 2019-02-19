@@ -4,6 +4,6 @@ webassembly_js.then(wasmModule => {
   const ctx = document.getElementById('canvas').getContext('2d');
   ctx.font = '48px serif';
   ctx.fillText(webassembkyText, 10, 50);
-  const sortedArray = wasmModule.send_js_array([1,2,3,4,5]);
+  const sortedArray = wasmModule.send_js_array([1,2,3,4]);
   ctx.fillText(sortedArray, 5, 100);
 });
