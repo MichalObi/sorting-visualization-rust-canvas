@@ -1,5 +1,12 @@
+extern crate js_sys;
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
+use js_sys::*;
+
+#[wasm_bindgen]
+pub fn get_js_array_val_by_index(array:JsValue, index:JsValue) -> Result<JsValue, JsValue> {
+    Reflect::get(&array, &index)
+}
 
 #[wasm_bindgen]
 pub fn get_js_array_len(array: Box<[JsValue]>) -> Box<[JsValue]> {
@@ -8,7 +15,7 @@ pub fn get_js_array_len(array: Box<[JsValue]>) -> Box<[JsValue]> {
 }
 
 pub fn get_js_array_count(array: Box<[JsValue]>) -> Box<[JsValue]> {
-    let mut count:f64 = 0.0;
+    let mut count: f64 = 0.0;
     for i in 0..array.len() {
         count += i as f64
     }

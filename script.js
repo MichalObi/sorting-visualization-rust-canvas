@@ -6,4 +6,6 @@ webassembly_js.then(wasmModule => {
   ctx.fillText(webassembkyText, 10, 50);
   const sortedArray = wasmModule.send_js_array([1,2,3,4]);
   ctx.fillText(sortedArray, 5, 100);
+  const test = wasmModule.get_js_array_val_by_index([1,2,3], 0);
+  console.log('test', test);
 });
