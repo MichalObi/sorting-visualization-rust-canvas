@@ -15,5 +15,9 @@ webassembly_js.then(wasmModule => {
   const config = {algoType, array};
   const appContext = wasmModule.run_app(config);
 
-  console.log('appContext', appContext);
+  appContext.set_algo_type('gnome');
+  console.log('Algo type: ', appContext.get_algo_type());
+
+  appContext.set_array([11, 21, 123, 321, 12]);
+  console.log('Array: ', appContext.get_array());
 });
