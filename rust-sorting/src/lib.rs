@@ -14,23 +14,25 @@ pub struct App {
 
 #[wasm_bindgen]
 impl App {
+
+    #[wasm_bindgen(constructor)]
     pub fn new(algo_type: JsValue, array: JsValue) -> App {
-        App { algo_type, array}
+        App {algo_type, array}
     }
 
-    // pub fn get_algo_type(&self) -> JsValue {
-    //     self.algo_type
-    // }
-    //
-    // pub fn get_array(&self) -> JsValue {
-    //     self.array
-    // }
+    pub fn get_algo_type(&self) -> JsValue {
+        self.algo_type.to_owned()
+    }
+
+    pub fn get_array(&self) -> JsValue {
+        self.array.to_owned()
+    }
 
     pub fn set_algo_type(&mut self, algo_type: JsValue) {
         self.algo_type = algo_type;
     }
 
-    pub fn set(&mut self, array: JsValue) {
+    pub fn set_array(&mut self, array: JsValue) {
         self.array = array;
     }
 }
