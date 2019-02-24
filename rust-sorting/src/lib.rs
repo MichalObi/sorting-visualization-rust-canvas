@@ -33,13 +33,14 @@ impl App {
 }
 
 #[wasm_bindgen]
-pub fn run_app(config:Object) {
+pub fn run_app(config:Object) -> App {
     let first_index:JsValue = JsValue::from_f64(0.0);
     let second_index:JsValue =  JsValue::from_f64(1.0);
     let values:Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let array = Reflect::get(&values, &second_index).unwrap();
-    App::new(algo_type, array);
+    let test = App::new(algo_type, array);
+    return test;
 }
 
 #[wasm_bindgen]
