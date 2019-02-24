@@ -4,6 +4,45 @@ use wasm_bindgen::prelude::*;
 use js_sys::*;
 
 #[wasm_bindgen]
+pub struct App {
+    algo_type: JsValue,
+    array: JsValue
+}
+
+#[wasm_bindgen]
+impl App {
+    pub fn new(algo_type: JsValue, array: JsValue) -> App {
+        App { algo_type, array}
+    }
+
+    // pub fn get_algo_type(&self) -> JsValue {
+    //     self.algo_type
+    // }
+    //
+    // pub fn get_array(&self) -> JsValue {
+    //     self.array
+    // }
+
+    pub fn set_algo_type(&mut self, algo_type: JsValue) {
+        self.algo_type = algo_type;
+    }
+
+    pub fn set(&mut self, array: JsValue) {
+        self.array = array;
+    }
+}
+
+#[wasm_bindgen]
+pub fn run_app(config:Object) {
+    let first_index:JsValue = JsValue::from_f64(0.0);
+    let second_index:JsValue =  JsValue::from_f64(1.0);
+    let values:Array = Object::values(&config);
+    let algo_type = Reflect::get(&values, &first_index).unwrap();
+    let array = Reflect::get(&values, &second_index).unwrap();
+    App::new(algo_type, array);
+}
+
+#[wasm_bindgen]
 pub fn get_js_array_val_by_index(array:JsValue, index:JsValue) -> Result<JsValue, JsValue> {
     Reflect::get(&array, &index)
 }
@@ -32,7 +71,7 @@ pub fn send_js_array(array: Option<Box<[JsValue]>>) -> Box<[JsValue]> {
     match array {
         Some(ref a) => {
             let array_cpy = a.clone();
-            get_js_array_count(array_cpy)
+            sort_js_array(array_cpy)
         }
         None => {
             let error_msg = "Some error ...";
