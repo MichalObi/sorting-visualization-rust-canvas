@@ -1,7 +1,10 @@
-extern crate js_sys;
 extern crate wasm_bindgen;
+extern crate js_sys;
+extern crate web_sys;
+
 use wasm_bindgen::prelude::*;
 use js_sys::*;
+use web_sys::console;
 
 #[wasm_bindgen]
 pub struct App {
@@ -39,8 +42,11 @@ pub fn run_app(config:Object) -> App {
     let values:Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let array = Reflect::get(&values, &second_index).unwrap();
-    let test = App::new(algo_type, array);
-    return test;
+
+    console::log_2(&"algo_type: ".into(), &algo_type);
+    console::log_2(&"array: ".into(), &array);
+
+    App::new(algo_type, array)
 }
 
 #[wasm_bindgen]
