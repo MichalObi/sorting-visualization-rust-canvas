@@ -29,11 +29,30 @@ impl App {
     }
 
     pub fn set_algo_type(&mut self, algo_type: JsValue) {
-        self.algo_type = algo_type;
+        self.algo_type = algo_type
     }
 
     pub fn set_array(&mut self, array: JsValue) {
-        self.array = array;
+        self.array = array
+    }
+
+    pub fn get_array_len(&self) -> u32 {
+        Array::length(&Array::from(&self.array))
+    }
+
+    pub fn get_array_val_by_index(&self, index: JsValue)-> Result<JsValue, JsValue> {
+        Reflect::get(&self.array, &index)
+    }
+
+    pub fn set_array_val_by_index(&self, index: JsValue, val: JsValue)-> Result<bool, JsValue> {
+        Reflect::set(&self.array, &index, &val)
+    }
+
+    pub fn swap(&self, first_index: JsValue, second_index: JsValue) {
+        let first_index_val = self.get_array_val_by_index(first_index).unwrap();
+        let second_index_val = self.get_array_val_by_index(second_index).unwrap();
+        // self.set_array_val_by_index(first_index, second_index_val);
+        // self.set_array_val_by_index(second_index, first_index_val);
     }
 }
 
@@ -51,45 +70,21 @@ pub fn run_app(config:Object) -> App {
     App::new(algo_type, array)
 }
 
-#[wasm_bindgen]
-pub fn get_js_array_val_by_index(array:JsValue, index:JsValue) -> Result<JsValue, JsValue> {
-    Reflect::get(&array, &index)
-}
-
-#[wasm_bindgen]
-pub fn get_js_array_len(array: Box<[JsValue]>) -> Box<[JsValue]> {
-    let len = array.len() as f64;
-    Box::new([JsValue::from_f64(len)])
-}
-
-pub fn get_js_array_count(array: Box<[JsValue]>) -> Box<[JsValue]> {
-    let mut count: f64 = 0.0;
-    for i in 0..array.len() {
-        count += i as f64
-    }
-    Box::new([JsValue::from_f64(count)])
-}
-
-#[wasm_bindgen]
-pub fn sort_js_array(array: Box<[JsValue]>) -> Box<[JsValue]> {
-    array
-}
-
-#[wasm_bindgen]
-pub fn send_js_array(array: Option<Box<[JsValue]>>) -> Box<[JsValue]> {
-    match array {
-        Some(ref a) => {
-            let array_cpy = a.clone();
-            sort_js_array(array_cpy)
-        }
-        None => {
-            let error_msg = "Some error ...";
-            Box::new([JsValue::from_str(&error_msg)])
-        }
-    }
-}
-
-#[wasm_bindgen]
-pub fn rust_sort(algo: String) -> String {
-    algo
-}
+// #[wasm_bindgen]
+// pub fn sort_js_array(array: Box<[JsValue]>) -> Box<[JsValue]> {
+//     array
+// }
+//
+// #[wasm_bindgen]
+// pub fn send_js_array(array: Option<Box<[JsValue]>>) -> Box<[JsValue]> {
+//     match array {
+//         Some(ref a) => {
+//             let array_cpy = a.clone();
+//             sort_js_array(array_cpy)
+//         }
+//         None => {
+//             let error_msg = "Some error ...";
+//             Box::new([JsValue::from_str(&error_msg)])
+//         }
+//     }
+// }
