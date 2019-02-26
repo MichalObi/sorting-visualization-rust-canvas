@@ -54,7 +54,7 @@ impl App {
         self.set_array_val_by_index(&b, &a_val);
     }
 
-    pub fn sort(&self) {
+    pub fn sort(&self) -> JsValue {
         let len: u32 = self.get_array_len();
 
         for i in 0..len - 1 {
@@ -62,14 +62,24 @@ impl App {
             let last: u32 = len - i - 1;
 
             for j in 0..last {
-                let current: JsValue = self.get_array_val_by_index(&JsValue::from(j));
-                let next: JsValue = self.get_array_val_by_index(&JsValue::from(j + 1));
+                let current: JsValue = JsValue::from(j);
+                let next: JsValue = JsValue::from(j + 1);
 
-                if (current > next) {
+                let current_js_val: JsValue = self.get_array_val_by_index(&current);
+                let next_js_val: JsValue = self.get_array_val_by_index(&next);
 
+                let current_f64_val: f64 = current_js_val.as_f64().unwrap();
+                let next_f64_val: f64 = next_js_val.as_f64().unwrap();
+
+                let grater: f64 = Math::max(current_f64_val, next_f64_val);
+
+                if grater == current_f64_val  {
+                    self.swap(&current, &next)
                 }
             }
         }
+
+        self.array.clone()
     }
 }
 
