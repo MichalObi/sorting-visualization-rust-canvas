@@ -53,12 +53,30 @@ impl App {
         self.set_array_val_by_index(&a, &b_val);
         self.set_array_val_by_index(&b, &a_val);
     }
+
+    pub fn sort(&self) {
+        let len: u32 = self.get_array_len();
+
+        for i in 0..len - 1 {
+
+            let last: u32 = len - i - 1;
+
+            for j in 0..last {
+                let current: JsValue = self.get_array_val_by_index(&JsValue::from(j));
+                let next: JsValue = self.get_array_val_by_index(&JsValue::from(j + 1));
+
+                if (current > next) {
+
+                }
+            }
+        }
+    }
 }
 
 #[wasm_bindgen]
 pub fn run_app(config: Object) -> App {
-    let first_index: JsValue = JsValue::from_f64(0.0);
-    let second_index: JsValue = JsValue::from_f64(1.0);
+    let first_index: JsValue = JsValue::from(0);
+    let second_index: JsValue = JsValue::from(1);
     let values: Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let array = Reflect::get(&values, &second_index).unwrap();
