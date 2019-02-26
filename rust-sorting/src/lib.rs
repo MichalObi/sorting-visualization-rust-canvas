@@ -1,23 +1,22 @@
-extern crate wasm_bindgen;
 extern crate js_sys;
+extern crate wasm_bindgen;
 extern crate web_sys;
 
-use wasm_bindgen::prelude::*;
 use js_sys::*;
+use wasm_bindgen::prelude::*;
 use web_sys::console;
 
 #[wasm_bindgen]
 pub struct App {
     algo_type: JsValue,
-    array: JsValue
+    array: JsValue,
 }
 
 #[wasm_bindgen]
 impl App {
-
     #[wasm_bindgen(constructor)]
     pub fn new(algo_type: JsValue, array: JsValue) -> App {
-        App {algo_type, array}
+        App { algo_type, array }
     }
 
     pub fn get_algo_type(&self) -> JsValue {
@@ -25,7 +24,7 @@ impl App {
     }
 
     pub fn get_array(&self) -> JsValue {
-        self.array.to_owned()
+        self.array.clone()
     }
 
     pub fn set_algo_type(&mut self, algo_type: JsValue) {
@@ -40,33 +39,29 @@ impl App {
         Array::length(&Array::from(&self.array))
     }
 
-    pub fn get_array_val_by_index(&self, index: JsValue)-> Result<JsValue, JsValue> {
-        Reflect::get(&self.array, &index)
+    pub fn get_array_val_by_index(&self, index: &JsValue) -> JsValue {
+        Reflect::get(&self.array, &index).unwrap()
     }
 
-    pub fn set_array_val_by_index(&self, index: JsValue, val: JsValue)-> Result<bool, JsValue> {
-        Reflect::set(&self.array, &index, &val)
+    pub fn set_array_val_by_index(&self, index: &JsValue, val: &JsValue) -> bool {
+        Reflect::set(&self.array, &index, &val).unwrap()
     }
 
-    pub fn swap(&self, first_index: JsValue, second_index: JsValue) {
-        let first_index_val = self.get_array_val_by_index(first_index).unwrap();
-        let second_index_val = self.get_array_val_by_index(second_index).unwrap();
-        // self.set_array_val_by_index(first_index, second_index_val);
-        // self.set_array_val_by_index(second_index, first_index_val);
+    pub fn swap(&self, a: &JsValue, b: &JsValue) {
+        let a_val = self.get_array_val_by_index(&a.clone());
+        let b_val = self.get_array_val_by_index(&b.clone());
+        self.set_array_val_by_index(&a, &b_val);
+        self.set_array_val_by_index(&b, &a_val);
     }
 }
 
 #[wasm_bindgen]
-pub fn run_app(config:Object) -> App {
-    let first_index:JsValue = JsValue::from_f64(0.0);
-    let second_index:JsValue =  JsValue::from_f64(1.0);
-    let values:Array = Object::values(&config);
+pub fn run_app(config: Object) -> App {
+    let first_index: JsValue = JsValue::from_f64(0.0);
+    let second_index: JsValue = JsValue::from_f64(1.0);
+    let values: Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let array = Reflect::get(&values, &second_index).unwrap();
-
-    console::log_2(&"algo_type: ".into(), &algo_type);
-    console::log_2(&"array: ".into(), &array);
-
     App::new(algo_type, array)
 }
 
