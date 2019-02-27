@@ -7,47 +7,33 @@ use wasm_bindgen::prelude::*;
 use web_sys::console;
 
 #[wasm_bindgen]
-pub struct App {
-    algo_type: JsValue,
-    array: JsValue,
+pub struct SortArray {
+    state: JsValue,
+}
+
+impl Clone for SortArray {
+    fn clone(&self) -> SortArray { self.to_owned() }
 }
 
 #[wasm_bindgen]
-impl App {
-    #[wasm_bindgen(constructor)]
-    pub fn new(algo_type: JsValue, array: JsValue) -> App {
-        App { algo_type, array }
+impl SortArray {
+    pub fn new(state: JsValue) -> SortArray {
+        SortArray { state }
     }
 
-    pub fn get_algo_type(&self) -> JsValue {
-        self.algo_type.to_owned()
+    fn get_array_len(&self) -> u32 {
+        Array::length(&Array::from(&self.state))
     }
 
-    pub fn get_array(&self) -> JsValue {
-        self.array.clone()
+    fn get_array_val_by_index(&self, index: &JsValue) -> JsValue {
+        Reflect::get(&self.state, &index).unwrap()
     }
 
-    pub fn set_algo_type(&mut self, algo_type: JsValue) {
-        self.algo_type = algo_type
+    fn set_array_val_by_index(&self, index: &JsValue, val: &JsValue) -> bool {
+        Reflect::set(&self.state, &index, &val).unwrap()
     }
 
-    pub fn set_array(&mut self, array: JsValue) {
-        self.array = array
-    }
-
-    pub fn get_array_len(&self) -> u32 {
-        Array::length(&Array::from(&self.array))
-    }
-
-    pub fn get_array_val_by_index(&self, index: &JsValue) -> JsValue {
-        Reflect::get(&self.array, &index).unwrap()
-    }
-
-    pub fn set_array_val_by_index(&self, index: &JsValue, val: &JsValue) -> bool {
-        Reflect::set(&self.array, &index, &val).unwrap()
-    }
-
-    pub fn swap(&self, a: &JsValue, b: &JsValue) {
+    fn swap(&self, a: &JsValue, b: &JsValue) {
         let a_val = self.get_array_val_by_index(&a.clone());
         let b_val = self.get_array_val_by_index(&b.clone());
         self.set_array_val_by_index(&a, &b_val);
@@ -79,7 +65,40 @@ impl App {
             }
         }
 
+        self.state.clone()
+    }
+}
+
+#[wasm_bindgen]
+pub struct App {
+    algo_type: JsValue,
+    array: SortArray,
+}
+
+#[wasm_bindgen]
+impl App {
+    pub fn new(algo_type: JsValue, array: SortArray) -> App {
+        App { algo_type, array }
+    }
+
+    pub fn get_algo_type(&self) -> JsValue {
+        self.algo_type.to_owned()
+    }
+
+    pub fn get_array(&self) -> SortArray {
         self.array.clone()
+    }
+
+    pub fn set_algo_type(&mut self, algo_type: JsValue) {
+        self.algo_type = algo_type
+    }
+
+    pub fn set_array(&mut self, array: SortArray) {
+        self.array = array
+    }
+
+    pub fn sort(&self) -> JsValue {
+        self.array.sort()
     }
 }
 
@@ -89,8 +108,10 @@ pub fn run_app(config: Object) -> App {
     let second_index: JsValue = JsValue::from(1);
     let values: Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
-    let array = Reflect::get(&values, &second_index).unwrap();
-    App::new(algo_type, array)
+    let state = Reflect::get(&values, &second_index).unwrap();
+    let sort_array = SortArray::new(state);
+
+    App::new(algo_type, sort_array)
 }
 
 // #[wasm_bindgen]
