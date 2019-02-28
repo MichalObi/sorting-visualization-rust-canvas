@@ -102,6 +102,10 @@ impl App {
     }
 }
 
+pub fn is_js_val_exist(val: &JsValue) -> bool {
+    !(JsValue::is_null(val) || JsValue::is_undefined(val))
+}
+
 #[wasm_bindgen]
 pub fn run_app(config: Object) -> App {
     let first_index: JsValue = JsValue::from(0);
@@ -109,26 +113,12 @@ pub fn run_app(config: Object) -> App {
     let values: Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let state = Reflect::get(&values, &second_index).unwrap();
-    let sort_array = SortArray::new(state);
 
-    App::new(algo_type, sort_array)
+    if is_js_val_exist(&algo_type) && is_js_val_exist(&state) {
+        let sort_array = SortArray::new(state);
+        App::new(algo_type, sort_array)
+    } else {
+        console::log_1(&"Error on app create - check config".into());
+        panic!();
+    }
 }
-
-// #[wasm_bindgen]
-// pub fn sort_js_array(array: Box<[JsValue]>) -> Box<[JsValue]> {
-//     array
-// }
-//
-// #[wasm_bindgen]
-// pub fn send_js_array(array: Option<Box<[JsValue]>>) -> Box<[JsValue]> {
-//     match array {
-//         Some(ref a) => {
-//             let array_cpy = a.clone();
-//             sort_js_array(array_cpy)
-//         }
-//         None => {
-//             let error_msg = "Some error ...";
-//             Box::new([JsValue::from_str(&error_msg)])
-//         }
-//     }
-// }
