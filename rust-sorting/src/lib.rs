@@ -12,7 +12,9 @@ pub struct SortArray {
 }
 
 impl Clone for SortArray {
-    fn clone(&self) -> SortArray { self.to_owned() }
+    fn clone(&self) -> SortArray {
+        self.to_owned()
+    }
 }
 
 #[wasm_bindgen]
@@ -44,7 +46,6 @@ impl SortArray {
         let len: u32 = self.get_array_len();
 
         for i in 0..len - 1 {
-
             let last: u32 = len - i - 1;
 
             for j in 0..last {
@@ -59,7 +60,7 @@ impl SortArray {
 
                 let grater: f64 = Math::max(current_f64_val, next_f64_val);
 
-                if grater == current_f64_val  {
+                if grater == current_f64_val {
                     self.swap(&current, &next)
                 }
             }
@@ -102,7 +103,7 @@ impl App {
     }
 }
 
-pub fn is_js_val_exist(val: &JsValue) -> bool {
+pub fn does_js_val_exist(val: &JsValue) -> bool {
     !(JsValue::is_null(val) || JsValue::is_undefined(val))
 }
 
@@ -114,11 +115,10 @@ pub fn run_app(config: Object) -> App {
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let state = Reflect::get(&values, &second_index).unwrap();
 
-    if is_js_val_exist(&algo_type) && is_js_val_exist(&state) {
-        let sort_array = SortArray::new(state);
-        App::new(algo_type, sort_array)
+    if does_js_val_exist(&algo_type) && does_js_val_exist(&state) {
+        App::new(algo_type, SortArray::new(state))
     } else {
-        console::log_1(&"Error on app create - check config".into());
+        console::log_1(&"Error on app create - check send config".into());
         panic!();
     }
 }
