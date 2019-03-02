@@ -6,6 +6,11 @@ use js_sys::*;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 
+use crate::algorithms::bubble::Algorithm;
+use crate::algorithms::bubble::BubbleSort;
+
+mod algorithms;
+
 #[wasm_bindgen]
 pub struct SortArray {
     state: JsValue,
@@ -17,7 +22,6 @@ impl Clone for SortArray {
     }
 }
 
-#[wasm_bindgen]
 impl SortArray {
     pub fn new(state: JsValue) -> SortArray {
         SortArray { state }
@@ -40,33 +44,6 @@ impl SortArray {
         let b_val = self.get_array_val_by_index(&b.clone());
         self.set_array_val_by_index(&a, &b_val);
         self.set_array_val_by_index(&b, &a_val);
-    }
-
-    pub fn sort(&self) -> JsValue {
-        let len: u32 = self.get_array_len();
-
-        for i in 0..len - 1 {
-            let last: u32 = len - i - 1;
-
-            for j in 0..last {
-                let current: JsValue = JsValue::from(j);
-                let next: JsValue = JsValue::from(j + 1);
-
-                let current_js_val: JsValue = self.get_array_val_by_index(&current);
-                let next_js_val: JsValue = self.get_array_val_by_index(&next);
-
-                let current_f64_val: f64 = current_js_val.as_f64().unwrap();
-                let next_f64_val: f64 = next_js_val.as_f64().unwrap();
-
-                let grater: f64 = Math::max(current_f64_val, next_f64_val);
-
-                if grater == current_f64_val {
-                    self.swap(&current, &next)
-                }
-            }
-        }
-
-        self.state.clone()
     }
 }
 
@@ -98,8 +75,9 @@ impl App {
         self.array = array
     }
 
-    pub fn sort(&self) -> JsValue {
-        self.array.sort()
+    pub fn sort(&self) -> SortArray {
+        let array = self.get_array();
+        BubbleSort::sort(array)
     }
 }
 
