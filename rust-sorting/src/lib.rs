@@ -76,7 +76,7 @@ impl App {
     }
 
     pub fn sort(&self) -> JsValue {
-        BubbleSort::sort(self.get_array())
+        BubbleSort::sort(self.array.clone())
     }
 }
 
