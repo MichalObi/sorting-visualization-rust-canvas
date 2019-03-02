@@ -12,14 +12,9 @@ use crate::algorithms::bubble::BubbleSort;
 mod algorithms;
 
 #[wasm_bindgen]
+#[derive(Clone)]
 pub struct SortArray {
     state: JsValue,
-}
-
-impl Clone for SortArray {
-    fn clone(&self) -> SortArray {
-        self.to_owned()
-    }
 }
 
 impl SortArray {
@@ -76,7 +71,7 @@ impl App {
     }
 
     pub fn sort(&self) -> JsValue {
-        BubbleSort::sort(self.array.clone())
+        BubbleSort::sort(self.get_array())
     }
 }
 
