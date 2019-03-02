@@ -5,13 +5,13 @@ use js_sys::*;
 use wasm_bindgen::prelude::*;
 
 pub trait Algorithm {
-    fn sort(array: SortArray) -> SortArray;
+    fn sort(array: SortArray) -> JsValue;
 }
 
 pub struct BubbleSort;
 
 impl Algorithm for BubbleSort {
-    fn sort(array: SortArray) -> SortArray {
+    fn sort(array: SortArray) -> JsValue {
         let len: u32 = array.get_array_len();
 
         for i in 0..len - 1 {
@@ -35,6 +35,6 @@ impl Algorithm for BubbleSort {
             }
         }
 
-        array.clone()
+        array.state.clone()
     }
 }

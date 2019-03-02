@@ -75,9 +75,8 @@ impl App {
         self.array = array
     }
 
-    pub fn sort(&self) -> SortArray {
-        let array = self.get_array();
-        BubbleSort::sort(array)
+    pub fn sort(&self) -> JsValue {
+        BubbleSort::sort(self.get_array())
     }
 }
 
