@@ -1,9 +1,11 @@
 const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
 
+const fillRandom = () => Math.floor(Math.random() * length);
 const shuffle = arr => arr.sort(() => Math.random() - 0.5);
 
 const algoType = 'bubble',
-      initialArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      length = 10;
+      initialArray = Array.from({length}, fillRandom),
       shuffledArray = shuffle(initialArray.slice());
       config = {algoType, array: shuffledArray.slice()};
 
