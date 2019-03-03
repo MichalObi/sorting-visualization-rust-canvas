@@ -10,11 +10,21 @@ const algoType = 'bubble',
 webassembly_js.then(wasmModule => {
 
   const appContext = wasmModule.run_app(config),
-        selectedAlgoType = appContext.get_algo_type(),
-        arrayAfterSort = appContext.sort();
+        selectedAlgoType = appContext.get_algo_type();
+
+  const jsArrSortStart = performance.now();
+  initialArray.slice().sort()
+  const jsArrSortStop = performance.now();
+  const jsArraySortTime = jsArrSortStop - jsArrSortStart;
+  console.log(`Call to js array sort ${jsArraySortTime} ms`);
+
+  const rustArraySortStart = performance.now();
+  const arrayAfterSort = appContext.sort();
+  const rustArraySortStop = performance.now();
+  const rustArraySortTime = rustArraySortStop - rustArraySortStart;
+  console.log(`Call to rust array sort ${rustArraySortTime} ms`);
 
   const ctx = document.getElementById('canvas').getContext('2d');
-
   ctx.clearRect(0, 0, 500, 500);
 
   ctx.font = '28px serif';
