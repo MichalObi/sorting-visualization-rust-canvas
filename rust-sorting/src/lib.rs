@@ -71,7 +71,12 @@ impl App {
     }
 
     pub fn sort(&self) -> JsValue {
-        BubbleSort::sort(self.get_array())
+        let algo_type = self.get_algo_type().as_string().unwrap();
+        if algo_type == "bubble" {
+            BubbleSort::sort(self.get_array())
+        } else {
+            JsValue::from_str(&"Algo not found")
+        }
     }
 }
 
