@@ -9,10 +9,13 @@ use web_sys::console;
 use crate::algorithms::bubble::Algorithm;
 use crate::algorithms::bubble::BubbleSort;
 
+extern crate wasm_bindgen_test;
+use wasm_bindgen_test::*;
+
 mod algorithms;
 
 #[wasm_bindgen]
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Debug)]
 pub struct SortArray {
     state: JsValue,
 }
@@ -43,6 +46,7 @@ impl SortArray {
 }
 
 #[wasm_bindgen]
+#[derive(PartialEq, Debug)]
 pub struct App {
     algo_type: JsValue,
     array: SortArray,
@@ -74,7 +78,7 @@ impl App {
         if self.get_algo_type().as_string().unwrap() == "bubble" {
             BubbleSort::sort(self.get_array())
         } else {
-            JsValue::from_str(&"Algo type not found");
+            JsValue::from_str(&"Algo type not found")
         }
     }
 }
@@ -97,4 +101,24 @@ pub fn run_app(config: Object) -> App {
         console::log_1(&"Error on app create - check send config".into());
         panic!();
     }
+}
+
+#[wasm_bindgen_test]
+fn test_run_app() {
+    let config = Object::new();
+    let algo_type_key = JsValue::from_str(&String::from("bubble"));
+    let algo_type = algo_type_key.clone();
+    let state_key = JsValue::from_str(&String::from("state"));
+
+    let js_array_as_string = Array::of3(
+        &JsValue::from(1),
+        &JsValue::from(2),
+        &JsValue::from(3)).to_string();
+
+    let array = JsValue::from(&js_array_as_string);
+
+    Reflect::set(&config, &algo_type_key, &algo_type_key).unwrap();
+    Reflect::set(&config, &state_key, &array).unwrap();
+
+    assert_eq!(run_app(config), App {algo_type, array: SortArray::new(array)})
 }
