@@ -1,17 +1,14 @@
 extern crate js_sys;
 extern crate wasm_bindgen;
+extern crate wasm_bindgen_test;
 extern crate web_sys;
 
-use js_sys::*;
+use js_sys::{Array, Object, Reflect};
 use wasm_bindgen::prelude::*;
+use wasm_bindgen_test::*;
 use web_sys::console;
 
-use crate::algorithms::bubble::Algorithm;
-use crate::algorithms::bubble::BubbleSort;
-
-extern crate wasm_bindgen_test;
-use wasm_bindgen_test::*;
-
+use crate::algorithms::bubble::{Algorithm, BubbleSort};
 mod algorithms;
 
 #[wasm_bindgen]
@@ -110,15 +107,19 @@ fn test_run_app() {
     let algo_type = algo_type_key.clone();
     let state_key = JsValue::from_str(&String::from("state"));
 
-    let js_array_as_string = Array::of3(
-        &JsValue::from(1),
-        &JsValue::from(2),
-        &JsValue::from(3)).to_string();
+    let js_array_as_string =
+        Array::of3(&JsValue::from(1), &JsValue::from(2), &JsValue::from(3)).to_string();
 
     let array = JsValue::from(&js_array_as_string);
 
     Reflect::set(&config, &algo_type_key, &algo_type_key).unwrap();
     Reflect::set(&config, &state_key, &array).unwrap();
 
-    assert_eq!(run_app(config), App {algo_type, array: SortArray::new(array)})
+    assert_eq!(
+        run_app(config),
+        App {
+            algo_type,
+            array: SortArray::new(array)
+        }
+    )
 }

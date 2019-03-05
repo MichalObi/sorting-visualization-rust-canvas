@@ -1,10 +1,8 @@
 extern crate js_sys;
 extern crate wasm_bindgen;
-extern crate web_sys;
 use crate::SortArray;
-use js_sys::*;
-
-use wasm_bindgen::prelude::*;
+use js_sys::Math;
+use wasm_bindgen::prelude::JsValue;
 
 pub struct BubbleSort;
 
