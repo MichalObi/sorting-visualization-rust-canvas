@@ -1,8 +1,10 @@
 extern crate js_sys;
 extern crate wasm_bindgen;
+extern crate web_sys;
 use crate::SortArray;
 use js_sys::Math;
 use wasm_bindgen::prelude::JsValue;
+use web_sys::{console, window};
 
 pub struct BubbleSort;
 
@@ -10,8 +12,17 @@ pub trait Algorithm {
     fn sort(array: SortArray) -> JsValue;
 }
 
+fn log_performance(performance: JsValue) {
+    console::log_2(&"Rust bubble sort time info (ms): ".into(), &performance);
+}
+
+fn measure_performance() -> f64 {
+    window().unwrap().performance().unwrap().now()
+}
+
 impl Algorithm for BubbleSort {
     fn sort(array: SortArray) -> JsValue {
+        let sort_start: f64 = measure_performance();
         let len: u32 = array.get_array_len();
         for i in 0..len - 1 {
             let last: u32 = len - i - 1;
@@ -34,6 +45,7 @@ impl Algorithm for BubbleSort {
             }
         }
 
+        log_performance(JsValue::from_f64(measure_performance() - sort_start));
         array.state.clone()
     }
 }
