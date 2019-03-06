@@ -1,9 +1,12 @@
 extern crate js_sys;
 extern crate wasm_bindgen;
+extern crate wasm_bindgen_test;
 extern crate web_sys;
+
 use crate::SortArray;
-use js_sys::Math;
+use js_sys::{Array, Math};
 use wasm_bindgen::prelude::JsValue;
+use wasm_bindgen_test::*;
 use web_sys::{console, window};
 
 pub struct BubbleSort;
@@ -18,6 +21,21 @@ fn log_performance(performance: JsValue) {
 
 fn measure_performance() -> f64 {
     window().unwrap().performance().unwrap().now()
+}
+
+#[wasm_bindgen_test]
+fn test_algo() {
+    let js_array_to_sort_as_string =
+        Array::of3(&JsValue::from(1), &JsValue::from(3), &JsValue::from(2)).to_string();
+    let array = JsValue::from(&js_array_to_sort_as_string);
+
+    let js_array_after_sort_as_string =
+        Array::of3(&JsValue::from(1), &JsValue::from(2), &JsValue::from(3)).to_string();
+
+    assert_eq!(
+        JsValue::from(&js_array_after_sort_as_string),
+        BubbleSort::sort(SortArray::new(array))
+    );
 }
 
 impl Algorithm for BubbleSort {
