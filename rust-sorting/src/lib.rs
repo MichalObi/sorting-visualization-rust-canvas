@@ -8,8 +8,8 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen_test::*;
 use web_sys::console;
 
-use crate::algorithms::bubble::{Algorithm, BubbleSort};
 mod algorithms;
+use crate::algorithms::bubble::{Algorithm, BubbleSort};
 
 #[wasm_bindgen]
 #[derive(Clone, PartialEq, Debug)]
