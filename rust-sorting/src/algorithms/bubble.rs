@@ -4,7 +4,7 @@ extern crate wasm_bindgen_test;
 extern crate web_sys;
 
 use crate::SortArray;
-use js_sys::{Array, Math};
+use js_sys::{Array, Math, JSON};
 use wasm_bindgen::prelude::JsValue;
 use wasm_bindgen_test::*;
 
@@ -33,10 +33,9 @@ fn test_algo() {
     let js_array_after_sort = Array::of3(&JsValue::from(1), &JsValue::from(2), &JsValue::from(3));
     let array = JsValue::from(&js_array_to_sort);
 
-    // to compare need data as string not array
     assert_eq!(
-        BubbleSort::sort(SortArray::new(array)),
-        JsValue::from(&js_array_after_sort),
+        JSON::stringify(BubbleSort::sort(SortArray::new(array))).unwrap(),
+        JSON::stringify(JsValue::from(&js_array_after_sort)).unwrap(),
     );
 }
 
