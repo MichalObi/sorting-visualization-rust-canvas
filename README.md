@@ -1,6 +1,6 @@
 # Rust sorting
 
-1) Instal js and rast dep
+1) Install JS and Rust dep
 
 ```
 npm i / cargo install
@@ -12,7 +12,7 @@ npm i / cargo install
 rustc --version
 ```
 
-3) Build with [wasm-pack]: https://github.com/rustwasm/wasm-pack
+3) Build with [wasm-pack]
 
 ```
 wasm-pack build
@@ -29,3 +29,5 @@ npm run serve
 ```
 wasm-pack test --chrome
 ```
+
+[wasm-pack]: : https://github.com/rustwasm/wasm-pack
