@@ -29,5 +29,4 @@ npm run serve
 ```
 wasm-pack test --chrome
 ```
-
-[wasm-pack]: : https://github.com/rustwasm/wasm-pack
+[wasm-pack]: https://github.com/rustwasm/wasm-pack
