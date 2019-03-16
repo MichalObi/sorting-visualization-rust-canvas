@@ -3,7 +3,6 @@ extern crate wasm_bindgen;
 extern crate wasm_bindgen_test;
 extern crate web_sys;
 
-use crate::SortArray;
 use js_sys::{Array, Math, JSON};
 use wasm_bindgen::prelude::JsValue;
 use wasm_bindgen_test::*;
@@ -11,11 +10,10 @@ use wasm_bindgen_test::*;
 #[cfg(not(test))]
 use web_sys::{console, window};
 
-pub struct BubbleSort;
+use crate::SortArray;
+use crate::algorithms::Algorithm;
 
-pub trait Algorithm {
-    fn sort(array: SortArray) -> JsValue;
-}
+pub struct BubbleSort;
 
 #[cfg(not(test))]
 fn log_performance(performance: JsValue) {

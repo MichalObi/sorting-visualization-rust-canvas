@@ -9,7 +9,9 @@ use wasm_bindgen_test::*;
 use web_sys::console;
 
 mod algorithms;
-use crate::algorithms::bubble::{Algorithm, BubbleSort};
+use crate::algorithms::Algorithm;
+use crate::algorithms::bubble::BubbleSort;
+use crate::algorithms::quick::QuickSort;
 
 #[wasm_bindgen]
 #[derive(Clone, PartialEq, Debug)]
@@ -72,8 +74,13 @@ impl App {
     }
 
     pub fn sort(&self) -> JsValue {
-        if self.get_algo_type().as_string().unwrap() == "bubble" {
-            BubbleSort::sort(self.get_array())
+        let algo_type = self.get_algo_type().as_string().unwrap();
+        let array = self.get_array();
+
+        if algo_type == "bubble" {
+            BubbleSort::sort(array)
+        } else if algo_type == "quick" {
+            QuickSort::sort(array)
         } else {
             JsValue::from_str(&"Algo type not found")
         }
