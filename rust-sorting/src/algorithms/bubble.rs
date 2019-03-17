@@ -10,8 +10,8 @@ use wasm_bindgen_test::*;
 #[cfg(not(test))]
 use web_sys::{console, window};
 
-use crate::SortArray;
 use crate::algorithms::Algorithm;
+use crate::SortArray;
 
 pub struct BubbleSort;
 

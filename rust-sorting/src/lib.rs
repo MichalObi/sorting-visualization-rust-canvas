@@ -9,9 +9,9 @@ use wasm_bindgen_test::*;
 use web_sys::console;
 
 mod algorithms;
-use crate::algorithms::Algorithm;
 use crate::algorithms::bubble::BubbleSort;
 use crate::algorithms::quick::QuickSort;
+use crate::algorithms::Algorithm;
 
 #[wasm_bindgen]
 #[derive(Clone, PartialEq, Debug)]
