@@ -10,6 +10,7 @@ use web_sys::console;
 
 mod algorithms;
 use crate::algorithms::bubble::BubbleSort;
+use crate::algorithms::merge::MergeSort;
 use crate::algorithms::quick::QuickSort;
 use crate::algorithms::Algorithm;
 
@@ -81,6 +82,8 @@ impl App {
             BubbleSort::sort(array)
         } else if algo_type == "quick" {
             QuickSort::sort(array)
+        } else if algo_type == "merge" {
+            MergeSort::sort(array)
         } else {
             JsValue::from_str(&"Algo type not found")
         }

@@ -1,6 +1,6 @@
-use wasm_bindgen::prelude::JsValue;
 use crate::algorithms::Algorithm;
 use crate::SortArray;
+use wasm_bindgen::prelude::JsValue;
 
 pub struct QuickSort;
 
@@ -32,7 +32,7 @@ fn partition(array: &SortArray, low: u32, high: u32) -> u32 {
 
         if current_f64_val <= pivot_f64_val {
             array.swap(&JsValue::from(i), &JsValue::from(j));
-            i +=1;
+            i += 1;
         }
     }
     array.swap(&JsValue::from(i), &JsValue::from(high));
