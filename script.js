@@ -3,7 +3,7 @@ const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
 const fillRandom = () => Math.floor(Math.random() * length);
 const shuffle = arr => arr.sort(() => Math.random() - 0.5);
 
-const algoType = 'quick',
+const algoType = 'merge',
       length = 10;
       initialArray = Array.from({length}, fillRandom),
       shuffledArray = shuffle(initialArray.slice());
