@@ -1,8 +1,8 @@
 extern crate js_sys;
 use crate::algorithms::Algorithm;
 use crate::SortArray;
+use js_sys::Array;
 use wasm_bindgen::prelude::JsValue;
-use js_sys::{Array};
 
 pub struct MergeSort;
 
@@ -37,27 +37,31 @@ fn merge(array: &SortArray, left: u32, middle: u32, right: u32) -> JsValue {
     let mut k = left;
 
     while i < left_size && j < right_size {
+        let left_val = left_array.get_array_val_by_index(&JsValue::from(i));
+        let right_val = right_array.get_array_val_by_index(&JsValue::from(j));
 
-        if left_array.get_array_val_by_index(&JsValue::from(i)).as_f64().unwrap() <= right_array.get_array_val_by_index(&JsValue::from(j)).as_f64().unwrap() {
-          array.set_array_val_by_index(&JsValue::from(k), &left_array.get_array_val_by_index(&JsValue::from(i)));
-          i += 1;
+        if left_val.as_f64().unwrap() <= right_val.as_f64().unwrap() {
+            array.set_array_val_by_index(&JsValue::from(k), &left_val);
+            i += 1;
         } else {
-            array.set_array_val_by_index(&JsValue::from(k), &right_array.get_array_val_by_index(&JsValue::from(j)));
-          j += 1;
+            array.set_array_val_by_index(&JsValue::from(k), &right_val);
+            j += 1;
         }
         k += 1;
     }
 
     while i < left_size {
-      array.set_array_val_by_index(&JsValue::from(k), &left_array.get_array_val_by_index(&JsValue::from(i)));
-      i += 1;
-      k += 1;
+        let left_val = left_array.get_array_val_by_index(&JsValue::from(i));
+        array.set_array_val_by_index(&JsValue::from(k), &left_val);
+        i += 1;
+        k += 1;
     }
 
     while j < right_size {
-      array.set_array_val_by_index(&JsValue::from(k), &right_array.get_array_val_by_index(&JsValue::from(j)));
-      j += 1;
-      k += 1;
+        let right_val = right_array.get_array_val_by_index(&JsValue::from(j));
+        array.set_array_val_by_index(&JsValue::from(k), &right_val);
+        j += 1;
+        k += 1;
     }
 
     array.state.clone()
