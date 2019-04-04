@@ -67,6 +67,10 @@ impl App {
         self.algo_type.to_owned()
     }
 
+    pub fn get_with_visual(&self) -> bool {
+        self.with_visual
+    }
+
     pub fn get_array(&self) -> SortArray {
         self.array.clone()
     }
@@ -82,13 +86,14 @@ impl App {
     pub fn sort(&self) -> JsValue {
         let algo_type = self.get_algo_type().as_string().unwrap();
         let array = self.get_array();
+        let with_visual = self.get_with_visual();
 
         if algo_type == "bubble" {
-            BubbleSort::sort(array)
+            BubbleSort::sort(array, with_visual)
         } else if algo_type == "quick" {
-            QuickSort::sort(array)
+            QuickSort::sort(array, with_visual)
         } else if algo_type == "merge" {
-            MergeSort::sort(array)
+            MergeSort::sort(array, with_visual)
         } else {
             JsValue::from_str(&"Algo type not found")
         }
@@ -107,8 +112,8 @@ pub fn run_app(config: Object) -> App {
 
     let values: Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
-    let state = Reflect::get(&values, &second_index).unwrap();
-    let with_visual = Reflect::get(&values, &third_index).unwrap();
+    let with_visual = Reflect::get(&values, &second_index).unwrap();
+    let state = Reflect::get(&values, &third_index).unwrap();
 
     if does_js_val_exist(&algo_type) && does_js_val_exist(&state) {
         App::new(

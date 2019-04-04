@@ -5,7 +5,7 @@ use wasm_bindgen::prelude::JsValue;
 pub struct QuickSort;
 
 impl Algorithm for QuickSort {
-    fn sort(array: SortArray) -> JsValue {
+    fn sort(array: SortArray, with_visual: bool) -> JsValue {
         sort_slice(&array, 0, array.get_array_len() - 1)
     }
 }

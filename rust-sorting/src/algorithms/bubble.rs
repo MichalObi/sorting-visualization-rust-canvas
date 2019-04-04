@@ -32,13 +32,13 @@ fn test_algo() {
     let array = JsValue::from(&js_array_to_sort);
 
     assert_eq!(
-        String::from(JSON::stringify(&BubbleSort::sort(SortArray::new(array))).unwrap()),
+        String::from(JSON::stringify(&BubbleSort::sort(SortArray::new(array), false)).unwrap()),
         String::from(JSON::stringify(&JsValue::from(&js_array_after_sort)).unwrap()),
     );
 }
 
 impl Algorithm for BubbleSort {
-    fn sort(array: SortArray) -> JsValue {
+    fn sort(array: SortArray, with_visual: bool) -> JsValue {
         #[cfg(not(test))]
         let sort_start: f64 = measure_performance();
         let len: u32 = array.get_array_len();
@@ -59,7 +59,12 @@ impl Algorithm for BubbleSort {
                 let grater: f64 = Math::max(current_f64_val, next_f64_val);
 
                 if grater == current_f64_val {
-                    array.swap(&current, &next)
+                    array.swap(&current, &next);
+
+                    if with_visual {
+                        #[cfg(not(test))]
+                        console::log_2(&"Current array state: ".into(), &array.state.clone());
+                    }
                 }
             }
         }
