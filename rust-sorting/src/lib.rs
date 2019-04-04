@@ -49,13 +49,18 @@ impl SortArray {
 #[derive(PartialEq, Debug)]
 pub struct App {
     algo_type: JsValue,
+    with_visual: bool,
     array: SortArray,
 }
 
 #[wasm_bindgen]
 impl App {
-    pub fn new(algo_type: JsValue, array: SortArray) -> App {
-        App { algo_type, array }
+    pub fn new(algo_type: JsValue, with_visual: bool, array: SortArray) -> App {
+        App {
+            algo_type,
+            with_visual,
+            array,
+        }
     }
 
     pub fn get_algo_type(&self) -> JsValue {
@@ -98,12 +103,19 @@ pub fn does_js_val_exist(val: &JsValue) -> bool {
 pub fn run_app(config: Object) -> App {
     let first_index: JsValue = JsValue::from(0);
     let second_index: JsValue = JsValue::from(1);
+    let third_index: JsValue = JsValue::from(2);
+
     let values: Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let state = Reflect::get(&values, &second_index).unwrap();
+    let with_visual = Reflect::get(&values, &third_index).unwrap();
 
     if does_js_val_exist(&algo_type) && does_js_val_exist(&state) {
-        App::new(algo_type, SortArray::new(state))
+        App::new(
+            algo_type,
+            with_visual.as_bool().unwrap(),
+            SortArray::new(state),
+        )
     } else {
         console::log_1(&"Error on app create - check send config".into());
         panic!();
@@ -113,8 +125,10 @@ pub fn run_app(config: Object) -> App {
 #[wasm_bindgen_test]
 fn test_run_app() {
     let config = Object::new();
-    let algo_type_key = JsValue::from_str(&String::from("bubble"));
-    let algo_type = algo_type_key.clone();
+    let algo_type_key = JsValue::from_str(&String::from("algoType"));
+    let algo_type = JsValue::from_str(&String::from("bubble"));
+    let with_visual_key = JsValue::from_str(&String::from("withVisual"));
+    let with_visual_js = JsValue::from_bool(true);
     let state_key = JsValue::from_str(&String::from("state"));
 
     let js_array_as_string =
@@ -122,13 +136,17 @@ fn test_run_app() {
 
     let array = JsValue::from(&js_array_as_string);
 
-    Reflect::set(&config, &algo_type_key, &algo_type_key).unwrap();
+    Reflect::set(&config, &algo_type_key, &algo_type).unwrap();
+    Reflect::set(&config, &with_visual_key, &with_visual_js).unwrap();
     Reflect::set(&config, &state_key, &array).unwrap();
+
+    let with_visual = with_visual_js.as_bool().unwrap();
 
     assert_eq!(
         run_app(config),
         App {
             algo_type,
+            with_visual,
             array: SortArray::new(array)
         }
     )
