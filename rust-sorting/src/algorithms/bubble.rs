@@ -63,7 +63,8 @@ impl Algorithm for BubbleSort {
 
                     if with_visual {
                         #[cfg(not(test))]
-                        console::log_2(&"Current array state: ".into(), &array.state.clone());
+                        use crate::current_array_state;
+                        current_array_state(&array.state.clone())
                     }
                 }
             }

@@ -1,9 +1,5 @@
 const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
 
-export function current_array_state(array) {
-  console.log('array', array);
-}
-
 const fillRandom = () => Math.floor(Math.random() * length);
 const shuffle = arr => arr.sort(() => Math.random() - 0.5);
 

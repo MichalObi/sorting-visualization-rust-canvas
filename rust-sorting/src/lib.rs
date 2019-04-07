@@ -14,6 +14,12 @@ use crate::algorithms::merge::MergeSort;
 use crate::algorithms::quick::QuickSort;
 use crate::algorithms::Algorithm;
 
+#[cfg(not(test))]
+#[wasm_bindgen(raw_module = "./../../utils")]
+extern "C" {
+    pub fn current_array_state(array: &JsValue);
+}
+
 #[wasm_bindgen]
 #[derive(Clone, PartialEq, Debug)]
 pub struct SortArray {
