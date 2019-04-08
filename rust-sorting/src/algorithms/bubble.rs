@@ -43,6 +43,12 @@ impl Algorithm for BubbleSort {
         let sort_start: f64 = measure_performance();
         let len: u32 = array.get_array_len();
 
+        if with_visual {
+            #[cfg(not(test))]
+            use crate::current_array_state;
+            current_array_state(&array.state.clone())
+        }
+
         for i in 0..len - 1 {
             let last: u32 = len - i - 1;
 
