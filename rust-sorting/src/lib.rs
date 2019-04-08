@@ -18,6 +18,7 @@ use crate::algorithms::Algorithm;
 #[wasm_bindgen(raw_module = "./../../utils")]
 extern "C" {
     pub fn current_array_state(array: &JsValue);
+    pub fn update_canvas_with_new_state(finished: &JsValue);
 }
 
 #[wasm_bindgen]

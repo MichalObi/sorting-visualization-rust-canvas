@@ -78,6 +78,13 @@ impl Algorithm for BubbleSort {
 
         #[cfg(not(test))]
         log_performance(JsValue::from_f64(measure_performance() - sort_start));
+
+        if with_visual {
+            #[cfg(not(test))]
+            use crate::update_canvas_with_new_state;
+            update_canvas_with_new_state(&JsValue::from_bool(true))
+        }
+
         array.state.clone()
     }
 }
