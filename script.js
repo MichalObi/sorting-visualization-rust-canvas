@@ -5,7 +5,7 @@ const algoType = 'bubble',
       withVisual = true,
       shuffle = arr => arr.sort(() => Math.random() - 0.5),
       length = 10,
-      initialArray = [...Array(length).keys()],
+      initialArray = Array(length).fill().map((v, i) => i + 1);
       shuffledArray = shuffle(initialArray.slice());
       config = {algoType, withVisual, array: shuffledArray.slice()};
 
