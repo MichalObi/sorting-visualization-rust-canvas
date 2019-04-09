@@ -1,12 +1,11 @@
 const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
 
-const fillRandom = () => Math.floor(Math.random() * length);
-const shuffle = arr => arr.sort(() => Math.random() - 0.5);
 
 const algoType = 'bubble',
       withVisual = true,
-      length = 10;
-      initialArray = Array.from({length}, fillRandom),
+      shuffle = arr => arr.sort(() => Math.random() - 0.5),
+      length = 10,
+      initialArray = [...Array(length).keys()],
       shuffledArray = shuffle(initialArray.slice());
       config = {algoType, withVisual, array: shuffledArray.slice()};
 
@@ -18,6 +17,7 @@ webassembly_js.then(wasmModule => {
   if (withVisual) {
     console.log('with visual');
     appContext.sort();
+    // cb will be trigger in utils
   } else {
     const jsArrSortStart = performance.now();
     initialArray.slice().sort()
@@ -32,7 +32,7 @@ webassembly_js.then(wasmModule => {
     console.log(`Call to rust array sort ${rustArraySortTime} ms`);
 
     const ctx = document.getElementById('canvas').getContext('2d');
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, 800, 400);
 
     ctx.font = '28px serif';
     ctx.fillText(`Selected algo type: ${selectedAlgoType}`, 5, 50);
