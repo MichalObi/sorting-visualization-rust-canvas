@@ -45,8 +45,8 @@ impl SortArray {
     }
 
     fn swap(&self, a: &JsValue, b: &JsValue) {
-        let a_val = self.get_array_val_by_index(&a.clone());
-        let b_val = self.get_array_val_by_index(&b.clone());
+        let a_val = self.get_array_val_by_index(a);
+        let b_val = self.get_array_val_by_index(b);
         self.set_array_val_by_index(&a, &b_val);
         self.set_array_val_by_index(&b, &a_val);
     }
