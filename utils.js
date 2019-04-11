@@ -23,11 +23,11 @@ export const update_canvas_with_new_state = () => {
 
 const drawState = currentState => {
     for (let i = 0, currentStateLength = currentState.length; i < currentStateLength; i++) {
-      const xPosition = 800 - (75 * (i + 1)), canvasWidth = 400;
+      const xPosition = 800 - (75 * (i + 1)), canvasHeight = 400;
       ctx.lineWidth = 20;
       ctx.beginPath();
-      ctx.moveTo(xPosition, canvasWidth);
-      ctx.lineTo(xPosition, currentState[i] * canvasWidth / currentStateLength);
+      ctx.moveTo(xPosition, canvasHeight);
+      ctx.lineTo(xPosition, currentState[i] * canvasHeight / currentStateLength);
       ctx.strokeStyle = "#FFF"
       ctx.stroke();
     }
