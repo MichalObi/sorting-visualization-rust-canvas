@@ -17,7 +17,7 @@ webassembly_js.then(wasmModule => {
   if (withVisual) {
     console.log('with visual');
     appContext.sort();
-    // cb will be trigger in utils
+    // cb will be trigger in utils.js file
   } else {
     const jsArrSortStart = performance.now();
     initialArray.slice().sort()
