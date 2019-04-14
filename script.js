@@ -4,7 +4,7 @@ const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
 const algoType = 'bubble',
       withVisual = true,
       shuffle = arr => arr.sort(() => Math.random() - 0.5),
-      length = 10,
+      length = 100,
       initialArray = Array(length).fill().map((v, i) => i + 1);
       shuffledArray = shuffle(initialArray.slice());
       config = {algoType, withVisual, array: shuffledArray.slice()};
@@ -15,9 +15,8 @@ webassembly_js.then(wasmModule => {
         selectedAlgoType = appContext.get_algo_type();
 
   if (withVisual) {
-    console.log('with visual');
     appContext.sort();
-    // cb will be trigger in utils
+    // cb will be trigger in utils.js
   } else {
     const jsArrSortStart = performance.now();
     initialArray.slice().sort()
