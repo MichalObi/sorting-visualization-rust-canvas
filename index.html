@@ -6,6 +6,27 @@
   </head>
   <body>
     <canvas id="canvas" width="800" height="400"></canvas>
+    <div class="actions">
+      <button id="start">Start sort</button>
+      <label for="algo-type">Algo type: </label>
+      <select id="algo-type">
+        <option value="bubble">bubble</option>
+        <option value="merge">merge</option>
+        <option value="quick">quick</option>
+      </select>
+      <label for="speed">Speed: </label>
+      <select id="speed">
+        <option value="slow">slow</option>
+        <option value="normal">normal</option>
+        <option value="fast">fast</option>
+      </select>
+      <label for="algo-type">Array size: </label>
+      <select id="size">
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </div>
     <script src="./script.js"></script>
   </body>
 </html>

@@ -1,11 +1,11 @@
 const canvasWidth = 800,
       canvasHeight = 400,
-      timeout = 0;
+      timeout = 500,
+      ctx = document.getElementById('canvas').getContext('2d'),
+      $startBtn = document.getElementById('start');
 
 let counter = 0,
     arrayStates = [];
-
-const ctx = document.getElementById('canvas').getContext('2d');
 
 export const current_array_state = array => {
   ++counter
@@ -20,6 +20,7 @@ export const update_canvas_with_new_state = () => {
        ctx.fillStyle = '#000';
        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
        drawState(arrayStates[i]);
+       if (i === arrayStatesLength - 1) $startBtn.disabled = false;
     }, i * timeout);
     })(i);
   }
