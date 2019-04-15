@@ -1,8 +1,10 @@
-const canvasWidth = 800,
+const ctx = document.getElementById('canvas').getContext('2d'),
+      $startBtn = document.getElementById('start'),
+      canvasWidth = 800,
       canvasHeight = 400,
       timeout = 500,
-      ctx = document.getElementById('canvas').getContext('2d'),
-      $startBtn = document.getElementById('start');
+      bcgColor = '#000',
+      itemColor = '#FFF';
 
 let counter = 0,
     arrayStates = [];
@@ -13,11 +15,11 @@ export const current_array_state = array => {
 }
 
 export const update_canvas_with_new_state = () => {
-  for (let i = 1, arrayStatesLength = arrayStates.length; i < arrayStatesLength; i++) {
+  for (let i = 0, arrayStatesLength = arrayStates.length; i < arrayStatesLength; i++) {
     (index => {
      setTimeout(() => {
        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-       ctx.fillStyle = '#000';
+       ctx.fillStyle = bcgColor;
        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
        drawState(arrayStates[i]);
        if (i === arrayStatesLength - 1) $startBtn.disabled = false;
@@ -37,7 +39,7 @@ const drawState = currentState => {
       ctx.beginPath();
       ctx.moveTo(xPosition, canvasHeight);
       ctx.lineTo(xPosition, currentState[i] * canvasHeight / currentStateLength);
-      ctx.strokeStyle = "#FFF"
+      ctx.strokeStyle = itemColor;
       ctx.stroke();
     }
 }
