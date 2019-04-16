@@ -7,7 +7,7 @@ use wasm_bindgen::prelude::JsValue;
 pub struct MergeSort;
 
 impl Algorithm for MergeSort {
-    fn sort(array: SortArray, with_visual: bool) -> JsValue {
+    fn sort(array: SortArray, with_visual: bool, speed: &JsValue) -> JsValue {
         merge_sort(&array, 0, array.get_array_len() - 1)
     }
 }

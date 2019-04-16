@@ -32,13 +32,13 @@ fn test_algo() {
     let array = JsValue::from(&js_array_to_sort);
 
     assert_eq!(
-        String::from(JSON::stringify(&BubbleSort::sort(SortArray::new(array), false)).unwrap()),
+        String::from(JSON::stringify(&BubbleSort::sort(SortArray::new(array), false, &JsValue::from(10))).unwrap()),
         String::from(JSON::stringify(&JsValue::from(&js_array_after_sort)).unwrap()),
     );
 }
 
 impl Algorithm for BubbleSort {
-    fn sort(array: SortArray, with_visual: bool) -> JsValue {
+    fn sort(array: SortArray, with_visual: bool, speed: &JsValue) -> JsValue {
         #[cfg(not(test))]
         let sort_start: f64 = measure_performance();
         let len: u32 = array.get_array_len();
@@ -82,7 +82,7 @@ impl Algorithm for BubbleSort {
         if with_visual {
             #[cfg(not(test))]
             use crate::update_canvas_with_new_state;
-            update_canvas_with_new_state(&JsValue::from_bool(true))
+            update_canvas_with_new_state(speed)
         }
 
         array.state.clone()

@@ -9,7 +9,12 @@ const $algoSelect = document.getElementById('algo-type'),
       canvasHeight = 400,
       bcgColor = '#000',
       textFont = '28px serif',
-      withVisual = true;
+      withVisual = true,
+      speedInMs = {
+        slow: 500,
+        normal: 250,
+        fast: 0
+      }
 
 webassembly_js.then(wasmModule => {
 
@@ -17,9 +22,11 @@ webassembly_js.then(wasmModule => {
     const algoType = $algoSelect.options[$algoSelect.selectedIndex].value,
         shuffle = arr => arr.sort(() => Math.random() - 0.5),
         length = parseInt($sizeSelect.options[$sizeSelect.selectedIndex].value),
+        speed = speedInMs[$speedSelect.options[$speedSelect.selectedIndex].value],
         initialArray = Array(length).fill().map((v, i) => i + 1);
         shuffledArray = shuffle(initialArray.slice());
-        return {algoType, withVisual, array: shuffledArray.slice()};
+        console.log('speed', speed)
+        return {algoType, withVisual, speed, array: shuffledArray.slice()};
   }
 
   const sortStart = () => {

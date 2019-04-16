@@ -2,7 +2,6 @@ const ctx = document.getElementById('canvas').getContext('2d'),
       $startBtn = document.getElementById('start'),
       canvasWidth = 800,
       canvasHeight = 400,
-      timeout = 500,
       bcgColor = '#000',
       itemColor = '#FFF';
 
@@ -14,7 +13,7 @@ export const current_array_state = array => {
   arrayStates.push(JSON.parse(JSON.stringify(array))); // push copy by value
 }
 
-export const update_canvas_with_new_state = () => {
+export const update_canvas_with_new_state = speed => {
   for (let i = 0, arrayStatesLength = arrayStates.length; i < arrayStatesLength; i++) {
     (index => {
      setTimeout(() => {
@@ -23,7 +22,7 @@ export const update_canvas_with_new_state = () => {
        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
        drawState(arrayStates[i]);
        if (i === arrayStatesLength - 1) $startBtn.disabled = false;
-    }, i * timeout);
+    }, i * speed);
     })(i);
   }
 }

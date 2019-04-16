@@ -18,7 +18,7 @@ use crate::algorithms::Algorithm;
 #[wasm_bindgen(raw_module = "./../../utils")]
 extern "C" {
     pub fn current_array_state(array: &JsValue);
-    pub fn update_canvas_with_new_state(finished: &JsValue);
+    pub fn update_canvas_with_new_state(speed: &JsValue);
 }
 
 #[wasm_bindgen]
@@ -57,15 +57,17 @@ impl SortArray {
 pub struct App {
     algo_type: JsValue,
     with_visual: bool,
+    speed: JsValue,
     array: SortArray,
 }
 
 #[wasm_bindgen]
 impl App {
-    pub fn new(algo_type: JsValue, with_visual: bool, array: SortArray) -> App {
+    pub fn new(algo_type: JsValue, with_visual: bool, speed: JsValue, array: SortArray) -> App {
         App {
             algo_type,
             with_visual,
+            speed,
             array,
         }
     }
@@ -76,6 +78,10 @@ impl App {
 
     pub fn get_with_visual(&self) -> bool {
         self.with_visual
+    }
+
+    pub fn get_speed(&self) -> JsValue {
+        self.speed.to_owned()
     }
 
     pub fn get_array(&self) -> SortArray {
@@ -94,13 +100,14 @@ impl App {
         let algo_type = self.get_algo_type().as_string().unwrap();
         let array = self.get_array();
         let with_visual = self.get_with_visual();
+        let speed = self.get_speed();
 
         if algo_type == "bubble" {
-            BubbleSort::sort(array, with_visual)
+            BubbleSort::sort(array, with_visual, &speed)
         } else if algo_type == "quick" {
-            QuickSort::sort(array, with_visual)
+            QuickSort::sort(array, with_visual, &speed)
         } else if algo_type == "merge" {
-            MergeSort::sort(array, with_visual)
+            MergeSort::sort(array, with_visual, &speed)
         } else {
             JsValue::from_str(&"Algo type not found")
         }
@@ -116,16 +123,19 @@ pub fn run_app(config: Object) -> App {
     let first_index: JsValue = JsValue::from(0);
     let second_index: JsValue = JsValue::from(1);
     let third_index: JsValue = JsValue::from(2);
+    let fourth_index: JsValue = JsValue::from(3);
 
     let values: Array = Object::values(&config);
     let algo_type = Reflect::get(&values, &first_index).unwrap();
     let with_visual = Reflect::get(&values, &second_index).unwrap();
-    let state = Reflect::get(&values, &third_index).unwrap();
+    let speed = Reflect::get(&values, &third_index).unwrap();
+    let state = Reflect::get(&values, &fourth_index).unwrap();
 
     if does_js_val_exist(&algo_type) && does_js_val_exist(&state) {
         App::new(
             algo_type,
             with_visual.as_bool().unwrap(),
+            speed,
             SortArray::new(state),
         )
     } else {
@@ -139,6 +149,8 @@ fn test_run_app() {
     let config = Object::new();
     let algo_type_key = JsValue::from_str(&String::from("algoType"));
     let algo_type = JsValue::from_str(&String::from("bubble"));
+    let speed_key = JsValue::from_str(&String::from("speed"));
+    let speed = JsValue::from_str(&String::from("10"));
     let with_visual_key = JsValue::from_str(&String::from("withVisual"));
     let with_visual_js = JsValue::from_bool(true);
     let state_key = JsValue::from_str(&String::from("state"));
@@ -150,6 +162,7 @@ fn test_run_app() {
 
     Reflect::set(&config, &algo_type_key, &algo_type).unwrap();
     Reflect::set(&config, &with_visual_key, &with_visual_js).unwrap();
+    Reflect::set(&config, &speed_key, &speed).unwrap();
     Reflect::set(&config, &state_key, &array).unwrap();
 
     let with_visual = with_visual_js.as_bool().unwrap();
@@ -159,6 +172,7 @@ fn test_run_app() {
         App {
             algo_type,
             with_visual,
+            speed,
             array: SortArray::new(array)
         }
     )

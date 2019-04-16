@@ -6,5 +6,5 @@ pub mod merge;
 pub mod quick;
 
 pub trait Algorithm {
-    fn sort(array: SortArray, with_visual: bool) -> JsValue;
+    fn sort(array: SortArray, with_visual: bool, speed: &JsValue) -> JsValue;
 }
