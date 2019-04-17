@@ -58,9 +58,11 @@ webassembly_js.then(wasmModule => {
       const rustArraySortTime = rustArraySortStop - rustArraySortStart;
       console.log(`Call to rust array sort ${rustArraySortTime} ms`);
 
+      ctx.fillStyle = bcgColor;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       ctx.font = textFont;
       ctx.fillStyle = fontColor;
+      
       ctx.fillText(`Selected algo type: ${selectedAlgoType}`, 5, 50);
       ctx.fillText(`Initial Array: ${sortArrays.initialArray}`, 5, 100);
       ctx.fillText(`Shuffled Array: ${sortArrays.shuffledArray}`, 5, 150);
