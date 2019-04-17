@@ -9,12 +9,14 @@ const $algoSelect = document.getElementById('algo-type'),
       canvasHeight = 400,
       bcgColor = '#000',
       textFont = '28px serif',
-      withVisual = true,
+      withVisual = document.getElementById('with-visual').checked,
       speedInMs = {
         slow: 500,
         normal: 250,
         fast: 0
-      }
+      };
+
+let sortArrays = {}
 
 webassembly_js.then(wasmModule => {
 
@@ -25,12 +27,14 @@ webassembly_js.then(wasmModule => {
         speed = speedInMs[$speedSelect.options[$speedSelect.selectedIndex].value],
         initialArray = Array(length).fill().map((v, i) => i + 1);
         shuffledArray = shuffle(initialArray.slice());
+        sortArrays = {initialArray, shuffledArray};
         return {algoType, withVisual, speed, array: shuffledArray.slice()};
   }
 
   const sortStart = () => {
 
-    const appContext = wasmModule.run_app(prepareConfig()),
+    const config = prepareConfig(),
+          appContext = wasmModule.run_app(config),
           selectedAlgoType = appContext.get_algo_type();
 
     $startBtn.disabled = true;
@@ -40,7 +44,7 @@ webassembly_js.then(wasmModule => {
       // cb will be trigger in utils.js
     } else {
       const jsArrSortStart = performance.now();
-      initialArray.slice().sort()
+      sortArrays.initialArray.slice().sort()
       const jsArrSortStop = performance.now();
       const jsArraySortTime = jsArrSortStop - jsArrSortStart;
       console.log(`Call to js array sort ${jsArraySortTime} ms`);
@@ -55,9 +59,11 @@ webassembly_js.then(wasmModule => {
 
       ctx.font = textFont;
       ctx.fillText(`Selected algo type: ${selectedAlgoType}`, 5, 50);
-      ctx.fillText(`Initial Array: ${initialArray}`, 5, 100);
-      ctx.fillText(`Shuffled Array: ${shuffledArray}`, 5, 150);
+      ctx.fillText(`Initial Array: ${sortArrays.initialArray}`, 5, 100);
+      ctx.fillText(`Shuffled Array: ${sortArrays.shuffledArray}`, 5, 150);
       ctx.fillText(`Sorted in RUST Array: ${arrayAfterSort}`, 5, 200);
+
+      $startBtn.disabled = false;
     }
   }
 
