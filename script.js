@@ -25,7 +25,6 @@ webassembly_js.then(wasmModule => {
         speed = speedInMs[$speedSelect.options[$speedSelect.selectedIndex].value],
         initialArray = Array(length).fill().map((v, i) => i + 1);
         shuffledArray = shuffle(initialArray.slice());
-        console.log('speed', speed)
         return {algoType, withVisual, speed, array: shuffledArray.slice()};
   }
 
