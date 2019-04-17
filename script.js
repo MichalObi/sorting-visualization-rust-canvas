@@ -4,23 +4,26 @@ const $algoSelect = document.getElementById('algo-type'),
       $sizeSelect = document.getElementById('size'),
       $speedSelect = document.getElementById('speed'),
       $startBtn = document.getElementById('start'),
+      $withVisualCheckbox = document.getElementById('with-visual'),
       ctx = document.getElementById('canvas').getContext('2d'),
       canvasWidth = 800,
       canvasHeight = 400,
       bcgColor = '#000',
+      fontColor = '#FFF',
       textFont = '28px serif',
-      withVisual = document.getElementById('with-visual').checked,
       speedInMs = {
         slow: 500,
         normal: 250,
         fast: 0
-      };
+      }
 
-let sortArrays = {}
+let sortArrays = {},
+    withVisual = null;
 
 webassembly_js.then(wasmModule => {
 
   const prepareConfig = () => {
+    withVisual = $withVisualCheckbox.checked;
     const algoType = $algoSelect.options[$algoSelect.selectedIndex].value,
         shuffle = arr => arr.sort(() => Math.random() - 0.5),
         length = parseInt($sizeSelect.options[$sizeSelect.selectedIndex].value),
@@ -55,9 +58,9 @@ webassembly_js.then(wasmModule => {
       const rustArraySortTime = rustArraySortStop - rustArraySortStart;
       console.log(`Call to rust array sort ${rustArraySortTime} ms`);
 
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       ctx.font = textFont;
+      ctx.fillStyle = fontColor;
       ctx.fillText(`Selected algo type: ${selectedAlgoType}`, 5, 50);
       ctx.fillText(`Initial Array: ${sortArrays.initialArray}`, 5, 100);
       ctx.fillText(`Shuffled Array: ${sortArrays.shuffledArray}`, 5, 150);
