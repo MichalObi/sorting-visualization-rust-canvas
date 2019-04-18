@@ -10,7 +10,13 @@ impl Algorithm for QuickSort {
     }
 }
 
-fn sort_slice(array: &SortArray, low: u32, high: u32, with_visual: bool, speed: &JsValue) -> JsValue {
+fn sort_slice(
+    array: &SortArray,
+    low: u32,
+    high: u32,
+    with_visual: bool,
+    speed: &JsValue,
+) -> JsValue {
     if low < high {
         let pivot = partition(array, low, high, with_visual);
         sort_slice(array, low, pivot - 1, with_visual, speed);

@@ -32,7 +32,14 @@ fn test_algo() {
     let array = JsValue::from(&js_array_to_sort);
 
     assert_eq!(
-        String::from(JSON::stringify(&BubbleSort::sort(SortArray::new(array), false, &JsValue::from(10))).unwrap()),
+        String::from(
+            JSON::stringify(&BubbleSort::sort(
+                SortArray::new(array),
+                false,
+                &JsValue::from(10)
+            ))
+            .unwrap()
+        ),
         String::from(JSON::stringify(&JsValue::from(&js_array_after_sort)).unwrap()),
     );
 }

@@ -12,7 +12,13 @@ impl Algorithm for MergeSort {
     }
 }
 
-fn merge_sort(array: &SortArray, left: u32, right: u32, with_visual: bool, speed: &JsValue) -> JsValue {
+fn merge_sort(
+    array: &SortArray,
+    left: u32,
+    right: u32,
+    with_visual: bool,
+    speed: &JsValue,
+) -> JsValue {
     if left < right {
         let middle = (left + right) / 2;
 
@@ -25,7 +31,14 @@ fn merge_sort(array: &SortArray, left: u32, right: u32, with_visual: bool, speed
     }
 }
 
-fn merge(array: &SortArray, left: u32, middle: u32, right: u32, with_visual: bool, speed: &JsValue) -> JsValue {
+fn merge(
+    array: &SortArray,
+    left: u32,
+    middle: u32,
+    right: u32,
+    with_visual: bool,
+    speed: &JsValue,
+) -> JsValue {
     let left_size = middle - left + 1;
     let right_size = right - middle;
 
