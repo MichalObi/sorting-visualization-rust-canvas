@@ -34,6 +34,9 @@ webassembly_js.then(wasmModule => {
         return {algoType, withVisual, speed, array: shuffledArray.slice()};
   }
 
+  const prepareArrayDisplay = array =>
+        array.length <= 10 ? array : `${array.slice(0, 10)} ...`;
+
   const sortStart = () => {
 
     const config = prepareConfig(),
@@ -50,23 +53,24 @@ webassembly_js.then(wasmModule => {
       sortArrays.initialArray.slice().sort()
       const jsArrSortStop = performance.now();
       const jsArraySortTime = jsArrSortStop - jsArrSortStart;
-      console.log(`Call to js array sort ${jsArraySortTime} ms`);
 
       const rustArraySortStart = performance.now();
       const arrayAfterSort = appContext.sort();
       const rustArraySortStop = performance.now();
       const rustArraySortTime = rustArraySortStop - rustArraySortStart;
-      console.log(`Call to rust array sort ${rustArraySortTime} ms`);
 
       ctx.fillStyle = bcgColor;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       ctx.font = textFont;
       ctx.fillStyle = fontColor;
-      
+
       ctx.fillText(`Selected algo type: ${selectedAlgoType}`, 5, 50);
-      ctx.fillText(`Initial Array: ${sortArrays.initialArray}`, 5, 100);
-      ctx.fillText(`Shuffled Array: ${sortArrays.shuffledArray}`, 5, 150);
-      ctx.fillText(`Sorted in RUST Array: ${arrayAfterSort}`, 5, 200);
+      ctx.fillText(`Array size: ${sortArrays.initialArray.length}`, 5, 100);
+      ctx.fillText(`Initial Array: ${prepareArrayDisplay(sortArrays.initialArray)}`, 5, 150);
+      ctx.fillText(`Shuffled Array: ${prepareArrayDisplay(sortArrays.shuffledArray)}`, 5, 200);
+      ctx.fillText(`Sorted in RUST Array: ${prepareArrayDisplay(arrayAfterSort)}`, 5, 250);
+      ctx.fillText(`Call to js array sort ${jsArraySortTime} ms`, 5, 300);
+      ctx.fillText(`Call to rust array sort ${rustArraySortTime} ms`, 5, 350);
 
       $startBtn.disabled = false;
     }
