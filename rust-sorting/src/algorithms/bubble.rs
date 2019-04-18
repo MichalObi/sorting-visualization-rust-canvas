@@ -57,19 +57,13 @@ impl Algorithm for BubbleSort {
         }
 
         for i in 0..len - 1 {
-
             for j in 0..len - i - 1 {
-
                 let current: JsValue = JsValue::from(j);
                 let next: JsValue = JsValue::from(j + 1);
 
-                let current_f64_val: f64 = array
-                    .get_array_val_by_index(&current)
-                    .as_f64().unwrap();
+                let current_f64_val: f64 = array.get_array_val_by_index(&current).as_f64().unwrap();
 
-                let next_f64_val: f64 = array
-                    .get_array_val_by_index(&next)
-                    .as_f64().unwrap();
+                let next_f64_val: f64 = array.get_array_val_by_index(&next).as_f64().unwrap();
 
                 if Math::max(current_f64_val, next_f64_val) as u8 == current_f64_val as u8 {
                     array.swap(&current, &next);
