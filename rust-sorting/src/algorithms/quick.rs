@@ -25,6 +25,7 @@ fn sort_slice(
         if with_visual {
             #[cfg(not(test))]
             use crate::update_canvas_with_new_state;
+            #[cfg(not(test))]
             update_canvas_with_new_state(speed)
         }
 
@@ -48,6 +49,7 @@ fn partition(array: &SortArray, low: u32, high: u32, with_visual: bool) -> u32 {
             if with_visual {
                 #[cfg(not(test))]
                 use crate::current_array_state;
+                #[cfg(not(test))]
                 current_array_state(&array.state.clone())
             }
 
@@ -59,6 +61,7 @@ fn partition(array: &SortArray, low: u32, high: u32, with_visual: bool) -> u32 {
     if with_visual {
         #[cfg(not(test))]
         use crate::current_array_state;
+        #[cfg(not(test))]
         current_array_state(&array.state.clone())
     }
 

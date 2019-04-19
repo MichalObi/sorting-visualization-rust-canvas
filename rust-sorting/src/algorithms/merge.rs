@@ -59,6 +59,7 @@ fn merge(
             if with_visual {
                 #[cfg(not(test))]
                 use crate::current_array_state;
+                #[cfg(not(test))]
                 current_array_state(&array.state.clone())
             }
 
@@ -69,6 +70,7 @@ fn merge(
             if with_visual {
                 #[cfg(not(test))]
                 use crate::current_array_state;
+                #[cfg(not(test))]
                 current_array_state(&array.state.clone())
             }
 
@@ -84,6 +86,7 @@ fn merge(
         if with_visual {
             #[cfg(not(test))]
             use crate::current_array_state;
+            #[cfg(not(test))]
             current_array_state(&array.state.clone())
         }
 
@@ -98,6 +101,7 @@ fn merge(
         if with_visual {
             #[cfg(not(test))]
             use crate::current_array_state;
+            #[cfg(not(test))]
             current_array_state(&array.state.clone())
         }
 
@@ -108,6 +112,7 @@ fn merge(
     if with_visual {
         #[cfg(not(test))]
         use crate::update_canvas_with_new_state;
+        #[cfg(not(test))]
         update_canvas_with_new_state(speed)
     }
 
