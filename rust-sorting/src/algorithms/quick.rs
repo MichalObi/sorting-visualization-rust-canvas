@@ -6,14 +6,14 @@ pub struct QuickSort;
 
 impl Algorithm for QuickSort {
     fn sort(array: SortArray, with_visual: bool, speed: &JsValue) -> JsValue {
-        sort_slice(&array, 0, array.get_array_len() - 1, with_visual, speed)
+        sort_slice(&array, 0 as u8, (array.get_array_len() - 1) as u8, with_visual, speed)
     }
 }
 
 fn sort_slice(
     array: &SortArray,
-    low: u32,
-    high: u32,
+    low: u8,
+    high: u8,
     with_visual: bool,
     speed: &JsValue,
 ) -> JsValue {
@@ -33,36 +33,38 @@ fn sort_slice(
     }
 }
 
-fn partition(array: &SortArray, low: u32, high: u32, with_visual: bool) -> u32 {
+fn update_current_js_state(state: &JsValue) {
+    #[cfg(not(test))]
+    use crate::current_array_state;
+    #[cfg(not(test))]
+    current_array_state(state)
+}
+
+fn partition(array: &SortArray, low: u8, high: u8, with_visual: bool) -> u8 {
     let pivot_js_val = array.get_array_val_by_index(&JsValue::from(high));
-    let pivot_f64_val: f64 = pivot_js_val.as_f64().unwrap();
+    let pivot_u8_val: u8 = pivot_js_val.as_f64().unwrap() as u8;
 
     let mut i = low;
 
     for j in low..high {
         let current_js_val = array.get_array_val_by_index(&JsValue::from(j));
-        let current_f64_val: f64 = current_js_val.as_f64().unwrap();
+        let current_u8_val: u8 = current_js_val.as_f64().unwrap() as u8;
 
-        if current_f64_val <= pivot_f64_val {
+        if current_u8_val <= pivot_u8_val {
             array.swap(&JsValue::from(i), &JsValue::from(j));
 
             if with_visual {
-                #[cfg(not(test))]
-                use crate::current_array_state;
-                #[cfg(not(test))]
-                current_array_state(&array.state.clone())
+                update_current_js_state(&array.state.clone());
             }
 
             i += 1;
         }
     }
+
     array.swap(&JsValue::from(i), &JsValue::from(high));
 
     if with_visual {
-        #[cfg(not(test))]
-        use crate::current_array_state;
-        #[cfg(not(test))]
-        current_array_state(&array.state.clone())
+        update_current_js_state(&array.state.clone());
     }
 
     i
