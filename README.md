@@ -18,7 +18,7 @@ rustc --version
 wasm-pack build (--release)
 ```
 
-4) Run JS
+4) Run JS (Chrome 73 + / Firefox 66 +)
 
 ```
 npm run serve
