@@ -4,6 +4,8 @@ const ctx = document.getElementById('canvas').getContext('2d'),
       canvasHeight = 400,
       bcgColor = '#000',
       itemColor = '#FFF',
+      stepsTextFont = '14px serif',
+      stepsTextColor = '#66FF66',
       finalItemColor = '#FF0000';
 
 let counter = 0,
@@ -23,7 +25,9 @@ export const update_canvas_with_new_state = speed => {
        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
        ctx.fillStyle = bcgColor;
        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
        drawState(arrayStates[i], finalIteration);
+       drawStepsCount(i + 1);
 
        if (finalIteration) $startBtn.disabled = false;
 
@@ -40,6 +44,12 @@ const drawFinishBlink = (x, y) => {
 
   ctx.strokeStyle = grd;
   ctx.stroke();
+}
+
+const drawStepsCount = currentStep => {
+  ctx.font = stepsTextFont;
+  ctx.fillStyle = stepsTextColor;
+  ctx.fillText(`Step ${currentStep} of ${counter}`, 5, 20);
 }
 
 const drawState = (currentState, isFinal) => {
