@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <title>Rust-WASM-CANVAS</title>
-  </head>
-  <body>
-    <canvas id="canvas" width="800" height="400"></canvas>
-    <div class="actions">
-      <button id="start">Start sort</button>
-      <label for="algo-type">Algo type: </label>
-      <select id="algo-type">
-        <option value="bubble">bubble</option>
-        <option value="merge">merge</option>
-        <option value="quick">quick</option>
-      </select>
-      <label for="speed">Speed: </label>
-      <select id="speed">
-        <option value="slow">slow</option>
-        <option value="normal">normal</option>
-        <option value="fast">fast</option>
-      </select>
-      <label for="algo-type">Array size: </label>
-      <select id="size">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-      </select>
-      <label><input id="with-visual" type="checkbox">With visualization</label>
-    </div>
-  </body>
+
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+  <title>Rust-WASM-CANVAS</title>
+</head>
+
+<body>
+  <canvas id="canvas" width="800" height="400"></canvas>
+  <div class="actions">
+    <button id="start">Start sort</button>
+    <label for="algo-type">Algo type: </label>
+    <select id="algo-type">
+      <option value="bubble">bubble</option>
+      <option value="merge">merge</option>
+      <option value="quick">quick</option>
+    </select>
+    <label for="speed">Speed: </label>
+    <select id="speed">
+      <option value="slow">slow</option>
+      <option value="normal">normal</option>
+      <option value="fast">fast</option>
+    </select>
+    <label for="algo-type">Array size: </label>
+    <select id="size">
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+    <label><input id="with-visual" type="checkbox">With visualization</label>
+  </div>
+</body>
+
 </html>

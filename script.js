@@ -1,47 +1,55 @@
 const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
 
 const $algoSelect = document.getElementById('algo-type'),
-      $sizeSelect = document.getElementById('size'),
-      $speedSelect = document.getElementById('speed'),
-      $startBtn = document.getElementById('start'),
-      $withVisualCheckbox = document.getElementById('with-visual'),
-      ctx = document.getElementById('canvas').getContext('2d'),
-      canvasWidth = 800,
-      canvasHeight = 400,
-      bcgColor = '#000',
-      fontColor = '#FFF',
-      textFont = '28px serif',
-      speedInMs = {
-        slow: 500,
-        normal: 250,
-        fast: 0
-      }
+  $sizeSelect = document.getElementById('size'),
+  $speedSelect = document.getElementById('speed'),
+  $startBtn = document.getElementById('start'),
+  $withVisualCheckbox = document.getElementById('with-visual'),
+  ctx = document.getElementById('canvas').getContext('2d'),
+  canvasWidth = 800,
+  canvasHeight = 400,
+  bcgColor = '#000',
+  fontColor = '#FFF',
+  textFont = '28px serif',
+  speedInMs = {
+    slow: 500,
+    normal: 250,
+    fast: 0
+  }
 
 let sortArrays = {},
-    withVisual = null;
+  withVisual = null;
 
 webassembly_js.then(wasmModule => {
 
   const prepareConfig = () => {
     withVisual = $withVisualCheckbox.checked;
     const algoType = $algoSelect.options[$algoSelect.selectedIndex].value,
-        shuffle = arr => arr.sort(() => Math.random() - 0.5),
-        length = parseInt($sizeSelect.options[$sizeSelect.selectedIndex].value),
-        speed = speedInMs[$speedSelect.options[$speedSelect.selectedIndex].value],
-        initialArray = Array(length).fill().map((v, i) => i + 1);
-        shuffledArray = shuffle(initialArray.slice());
-        sortArrays = {initialArray, shuffledArray};
-        return {algoType, withVisual, speed, array: shuffledArray.slice()};
+      shuffle = arr => arr.sort(() => Math.random() - 0.5),
+      length = parseInt($sizeSelect.options[$sizeSelect.selectedIndex].value),
+      speed = speedInMs[$speedSelect.options[$speedSelect.selectedIndex].value],
+      initialArray = Array(length).fill().map((v, i) => i + 1);
+    shuffledArray = shuffle(initialArray.slice());
+    sortArrays = {
+      initialArray,
+      shuffledArray
+    };
+    return {
+      algoType,
+      withVisual,
+      speed,
+      array: shuffledArray.slice()
+    };
   }
 
   const prepareArrayDisplay = array =>
-        array.length <= 10 ? array : `${array.slice(0, 10)} ...`;
+    array.length <= 10 ? array : `${array.slice(0, 10)} ...`;
 
   const sortStart = () => {
 
     const config = prepareConfig(),
-          appContext = wasmModule.run_app(config),
-          selectedAlgoType = appContext.get_algo_type();
+      appContext = wasmModule.run_app(config),
+      selectedAlgoType = appContext.get_algo_type();
 
     $startBtn.disabled = true;
 

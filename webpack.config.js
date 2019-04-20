@@ -14,8 +14,8 @@ module.exports = {
       filename: './index.html'
     }),
     new webpack.ProvidePlugin({
-        TextDecoder: ['text-encoding', 'TextDecoder'],
-        TextEncoder: ['text-encoding', 'TextEncoder']
+      TextDecoder: ['text-encoding', 'TextDecoder'],
+      TextEncoder: ['text-encoding', 'TextEncoder']
     })
   ],
   mode: 'development'

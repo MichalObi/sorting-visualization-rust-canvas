@@ -1,15 +1,15 @@
 const ctx = document.getElementById('canvas').getContext('2d'),
-      $startBtn = document.getElementById('start'),
-      canvasWidth = 800,
-      canvasHeight = 400,
-      bcgColor = '#000',
-      itemColor = '#FFF',
-      stepsTextFont = '14px serif',
-      stepsTextColor = '#66FF66',
-      finalItemColor = '#FF0000';
+  $startBtn = document.getElementById('start'),
+  canvasWidth = 800,
+  canvasHeight = 400,
+  bcgColor = '#000',
+  itemColor = '#FFF',
+  stepsTextFont = '14px serif',
+  stepsTextColor = '#66FF66',
+  finalItemColor = '#FF0000';
 
 let counter = 0,
-    arrayStates = [];
+  arrayStates = [];
 
 export const current_array_state = array => {
   ++counter
@@ -19,17 +19,17 @@ export const current_array_state = array => {
 export const update_canvas_with_new_state = speed => {
   for (let i = 0, arrayStatesLength = arrayStates.length; i < arrayStatesLength; i++) {
     (index => {
-     setTimeout(() => {
-       const finalIteration = i === arrayStatesLength - 1;
+      setTimeout(() => {
+        const finalIteration = i === arrayStatesLength - 1;
 
-       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-       ctx.fillStyle = bcgColor;
-       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx.fillStyle = bcgColor;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-       drawState(arrayStates[i], finalIteration);
-       drawStepsCount(i + 1);
+        drawState(arrayStates[i], finalIteration);
+        drawStepsCount(i + 1);
 
-       if (finalIteration) $startBtn.disabled = false;
+        if (finalIteration) $startBtn.disabled = false;
 
       }, i * speed);
     })(i);
@@ -53,12 +53,12 @@ const drawStepsCount = currentStep => {
 }
 
 const drawState = (currentState, isFinal) => {
-    const currentStateLength = currentState.length,
-          lineWidth = Math.floor((canvasWidth / 2) / currentStateLength);
+  const currentStateLength = currentState.length,
+    lineWidth = Math.floor((canvasWidth / 2) / currentStateLength);
 
   for (let i = 0; i < currentStateLength; i++) {
     const xPosition = canvasWidth - (lineWidth * 2 * (i + 1)),
-          yPosition = currentState[i] * canvasHeight / currentStateLength;
+      yPosition = currentState[i] * canvasHeight / currentStateLength;
 
     ctx.lineWidth = lineWidth;
     ctx.beginPath();
