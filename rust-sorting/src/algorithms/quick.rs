@@ -6,17 +6,17 @@ pub struct QuickSort;
 
 impl Algorithm for QuickSort {
     fn sort(array: SortArray, with_visual: bool, speed: &JsValue) -> JsValue {
-        sort_slice(&array, 0 as u8, (array.get_array_len() - 1) as u8, with_visual, speed)
+        sort_slice(
+            &array,
+            0 as u8,
+            (array.get_array_len() - 1) as u8,
+            with_visual,
+            speed,
+        )
     }
 }
 
-fn sort_slice(
-    array: &SortArray,
-    low: u8,
-    high: u8,
-    with_visual: bool,
-    speed: &JsValue,
-) -> JsValue {
+fn sort_slice(array: &SortArray, low: u8, high: u8, with_visual: bool, speed: &JsValue) -> JsValue {
     if low < high {
         let pivot = partition(array, low, high, with_visual);
         sort_slice(array, low, pivot - 1, with_visual, speed);

@@ -11,29 +11,97 @@ const $algoSelect = document.getElementById('algo-type'),
   bcgColor = '#000',
   fontColor = '#FFF',
   textFont = '28px serif',
+  welcomeMsg = 'Select options and press Start Sort.',
   speedInMs = {
     slow: 500,
     normal: 250,
     fast: 0
-  }
+  },
+  colorStops = [{
+      color: "#FF0000",
+      stopPercent: 0
+    },
+    {
+      color: "#FFFF00",
+      stopPercent: .125
+    },
+    {
+      color: "#00FF00",
+      stopPercent: .375
+    },
+    {
+      color: "#0000FF",
+      stopPercent: .625
+    },
+    {
+      color: "#FF00FF",
+      stopPercent: .875
+    },
+    {
+      color: "#FF0000",
+      stopPercent: 1
+    }
+  ];
 
 let sortArrays = {},
-  withVisual = null;
+  withVisual = null,
+  welcomeAnimationIntervalId = null;
 
 webassembly_js.then(wasmModule => {
 
+  const drawWelcomeAnimation = () => {
+
+    ctx.font = '45px impact'
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const metrics = ctx.measureText(welcomeMsg),
+      textWidth = metrics.width,
+      xPosition = canvasWidth / 2,
+      yPosition = canvasHeight / 2,
+      gradient = ctx.createLinearGradient(xPosition, 0, xPosition, canvasHeight);
+
+    for (let i = 0; i < colorStops.length; i++) {
+      let tmpColorStop = colorStops[i],
+        tmpColor = tmpColorStop.color,
+        tmpStopPercent = tmpColorStop.stopPercent;
+
+      gradient.addColorStop(tmpStopPercent, tmpColor);
+
+      tmpStopPercent += .015;
+
+      if (tmpStopPercent > 1) tmpStopPercent = 0;
+
+      tmpColorStop.stopPercent = tmpStopPercent;
+      colorStops[i] = tmpColorStop;
+    }
+
+
+    ctx.fillStyle = gradient;
+    ctx.fillText(welcomeMsg, xPosition, yPosition);
+  }
+
+  const drawWelcomeMsg = () => {
+    welcomeAnimationIntervalId = setInterval(() => {
+      drawWelcomeAnimation();
+    }, 20);
+  };
+
   const prepareConfig = () => {
     withVisual = $withVisualCheckbox.checked;
+
     const algoType = $algoSelect.options[$algoSelect.selectedIndex].value,
       shuffle = arr => arr.sort(() => Math.random() - 0.5),
       length = parseInt($sizeSelect.options[$sizeSelect.selectedIndex].value),
       speed = speedInMs[$speedSelect.options[$speedSelect.selectedIndex].value],
-      initialArray = Array(length).fill().map((v, i) => i + 1);
-    shuffledArray = shuffle(initialArray.slice());
+      initialArray = Array(length).fill().map((v, i) => i + 1),
+      shuffledArray = shuffle(initialArray.slice());
+
     sortArrays = {
       initialArray,
       shuffledArray
     };
+
     return {
       algoType,
       withVisual,
@@ -52,6 +120,11 @@ webassembly_js.then(wasmModule => {
       selectedAlgoType = appContext.get_algo_type();
 
     $startBtn.disabled = true;
+
+    clearInterval(welcomeAnimationIntervalId);
+
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
 
     if (withVisual) {
       appContext.sort();
@@ -88,4 +161,6 @@ webassembly_js.then(wasmModule => {
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   $startBtn.addEventListener('click', sortStart);
+
+  drawWelcomeMsg();
 });
