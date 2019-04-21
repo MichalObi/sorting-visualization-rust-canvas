@@ -1,5 +1,13 @@
 # Rust sorting
 
+Short start - use docker image (in progress ...)
+
+```
+docker build -t <user>/node-sorting-visualization-rust-canvas .
+
+docker run --rm --net=host <user>/node-sorting-visualization-rust-canvas
+```
+
 1) Install JS and Rust dep
 
 ```
