@@ -1,12 +1,14 @@
 # Rust sorting
 
-Short start - use docker image (in progress ...)
+Short start - use docker image for container build
 
 ```
-docker build -t <user>/node-sorting-visualization-rust-canvas .
+docker build -t <user>/sorting-visualization-rust-canvas .
 
-docker run --rm --net=host <user>/node-sorting-visualization-rust-canvas
+docker run --rm --net=host <user>/sorting-visualization-rust-canvas
 ```
+
+Long way - install dep. on local machine
 
 1) Install JS and Rust dep
 
