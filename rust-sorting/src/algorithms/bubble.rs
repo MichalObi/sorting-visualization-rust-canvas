@@ -49,6 +49,7 @@ impl Algorithm for BubbleSort {
         #[cfg(not(test))]
         let sort_start: f64 = measure_performance();
         let len: u8 = array.get_array_len() as u8;
+        let mut swapped;
 
         if with_visual {
             #[cfg(not(test))]
@@ -58,6 +59,7 @@ impl Algorithm for BubbleSort {
         }
 
         for i in 0..len - 1 {
+            swapped = false;
             for j in 0..len - i - 1 {
                 let current: JsValue = JsValue::from(j);
                 let next: JsValue = JsValue::from(j + 1);
@@ -68,6 +70,7 @@ impl Algorithm for BubbleSort {
 
                 if Math::max(current_f64_val, next_f64_val) as u8 == current_f64_val as u8 {
                     array.swap(&current, &next);
+                    swapped = true;
 
                     if with_visual {
                         #[cfg(not(test))]
@@ -76,6 +79,10 @@ impl Algorithm for BubbleSort {
                         current_array_state(&array.state.clone())
                     }
                 }
+            }
+
+            if swapped == false {
+                break;
             }
         }
 
