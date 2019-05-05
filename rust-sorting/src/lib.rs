@@ -120,6 +120,9 @@ pub fn does_js_val_exist(val: &JsValue) -> bool {
 
 #[wasm_bindgen]
 pub fn run_app(config: Object) -> App {
+    // Initialize debug logging for if/when things go wrong.
+    console_error_panic_hook::set_once();
+
     let first_index: JsValue = JsValue::from(0);
     let second_index: JsValue = JsValue::from(1);
     let third_index: JsValue = JsValue::from(2);
