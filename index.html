@@ -44,6 +44,12 @@
       navigator.serviceWorker.register(PATH)
         .then(() => console.log("serviceWorker work fine"))
         .catch(err => console.log("serviceWorker not registered - this happened: ", err));
+
+    Notification.requestPermission(status => {
+      if (status !== 'granted') {
+        console.log('No notification permission.');
+      }
+    });
   }
 </script>
 

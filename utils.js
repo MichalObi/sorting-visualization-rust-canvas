@@ -52,6 +52,9 @@ const drawStepsCount = currentStep => {
   ctx.fillText(`Step ${currentStep} of ${counter}`, 5, 20);
 }
 
+const showNotification = () => navigator.serviceWorker.getRegistration()
+  .then(reg => reg.showNotification('Sort finished !!!'))
+
 const drawState = (currentState, isFinal) => {
   const currentStateLength = currentState.length,
     lineWidth = Math.floor((canvasWidth / 2) / currentStateLength);
@@ -67,6 +70,7 @@ const drawState = (currentState, isFinal) => {
 
     if (isFinal) {
       drawFinishBlink(xPosition, yPosition);
+      if (currentStateLength - 1 === i && Notification.permission === 'granted') showNotification();
     } else {
       ctx.strokeStyle = itemColor;
       ctx.stroke();
