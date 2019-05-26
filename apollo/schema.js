@@ -19,7 +19,12 @@ const typeDefs = gql `
     algoType: ALGO_TYPE,
     withVisual: Boolean,
     speed: Int,
-    array: String
+    array: [String!]
+  }
+
+  type Mutation {
+    "Get a specyfic gql app config base on id."
+    getGqlAppConfig(id: ID!): AppConfig!
   }
 `;
 

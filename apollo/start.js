@@ -7,6 +7,7 @@ const {
 } = require('./schema');
 
 const initApolloServer = (ApolloServer, typeDefs) => {
+
   const resolvers = {
     Query: {
       hello: () => 'world',
