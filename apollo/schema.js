@@ -19,7 +19,7 @@ const typeDefs = gql `
     algoType: ALGO_TYPE,
     withVisual: Boolean,
     speed: Int,
-    array: [String!]
+    array: [Int!]
   }
 
   type Mutation {
