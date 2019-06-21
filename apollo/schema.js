@@ -4,8 +4,8 @@ const {
 
 const typeDefs = gql `
   type Query {
-    "A simple type for getting started!"
-    hello: String
+    getAllAppConfig: [AppConfig],
+    getAppConfigById: AppConfig
   }
 
   enum ALGO_TYPE {
@@ -20,11 +20,6 @@ const typeDefs = gql `
     withVisual: Boolean,
     speed: Int,
     array: [Int!]
-  }
-
-  type Mutation {
-    "Get a specyfic gql app config base on id."
-    getGqlAppConfig(id: ID!): AppConfig!
   }
 `;
 

@@ -10,7 +10,8 @@ const initApolloServer = (ApolloServer, typeDefs) => {
 
   const resolvers = {
     Query: {
-      hello: () => 'world',
+      getAllAppConfig: () => [AppConfig],
+      getAppConfigById: ($id) => AppConfig,
     },
   }
 
