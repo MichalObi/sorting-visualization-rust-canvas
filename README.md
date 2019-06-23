@@ -39,4 +39,10 @@ npm run serve
 ```
 wasm-pack test --chrome --headless
 ```
+
+6) Run mongodb in background (for graphql branch)
+
+```
+mongod --fork --syslog
+```
 [wasm-pack]: https://github.com/rustwasm/wasm-pack
