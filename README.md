@@ -40,9 +40,9 @@ npm run serve
 wasm-pack test --chrome --headless
 ```
 
-6) Run mongodb in background (for graphql branch)
+6) Run mongodb and apollo server
 
 ```
-mongod --fork --syslog
+npm run start-all (mongod --shutdown to close)
 ```
 [wasm-pack]: https://github.com/rustwasm/wasm-pack
