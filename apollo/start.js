@@ -11,20 +11,24 @@ const {
   ObjectId
 } = require('mongodb');
 
-const MONGO_URL = 'mongodb://localhost:27017/rust-canvas';
+const dbName = 'rust-canvas',
+  MONGO_URL = `mongodb://localhost:27017/${dbName}`;
 
 MongoClient.connect(MONGO_URL, {
   useNewUrlParser: true
-}, (err, db) => {
+}, (err, database) => {
   const initApolloServer = (ApolloServer, typeDefs) => {
 
-    if (err) throw err;
+    if (err) return console.dir(err);
+
     console.log("Database created!");
-    db.close();
+
+    const dbInstance = database.db(dbName),
+      appConfigs = dbInstance.collection('configs');
 
     const resolvers = {
       Query: {
-        getAllAppConfig: () => [AppConfig],
+        getAllAppConfigs: () => [AppConfig],
         getAppConfigById: ($id) => AppConfig,
       },
     }
