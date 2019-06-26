@@ -14,16 +14,13 @@ const {
 const dbName = 'rust-canvas',
   MONGO_URL = `mongodb://localhost:27017/${dbName}`;
 
-const errorHandler = err => console.dir(err);
-
 MongoClient.connect(MONGO_URL, {
   useNewUrlParser: true
 }, (err, database) => {
+  if (err) return console.dir(err);
+  console.log("Database created!");
+
   const initApolloServer = (ApolloServer, typeDefs) => {
-
-    if (err) errorHandler(err);
-
-    console.log("Database created!");
 
     const dbInstance = database.db(dbName),
       appConfigs = dbInstance.collection('configs'); // create collection
@@ -35,17 +32,23 @@ MongoClient.connect(MONGO_URL, {
 
     const resolvers = {
       Query: {
-        getAppConfigById: (root, {
+        getAppConfigById: async (root, {
           _id
-        }) => appConfigs.findOne(ObjectId(_id), (err, result) => {
-          if (err) errorHandler(err);
-          return prepare(result);
-        }),
-        getAllAppConfigs: ($id) => (root, {}) =>
-          appConfigs.find(ObjectId(_id), (err, result) => {
-            if (err) errorHandler(err);
-            return result.toArray().map(prepare);
-          }),
+        }) => prepare(await appConfigs.findOne(ObjectId(_id))),
+
+        getAllAppConfigs: async () =>
+          (await appConfigs.find({}).toArray()).map(prepare)
+      },
+      Mutation: {
+        createAppConfig: async (root, args) => {
+          const {
+            insertedIds
+          } = await appConfigs.insert(args);
+
+          return prepare(await appConfigs.findOne({
+            _id: insertedIds['0']
+          }));
+        }
       }
     }
 

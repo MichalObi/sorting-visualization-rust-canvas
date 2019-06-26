@@ -5,26 +5,26 @@ const {
 const typeDefs = gql `
   type Query {
     getAllAppConfigs: [AppConfig],
-    getAppConfigById: AppConfig
+    getAppConfigById(_id: String): AppConfig,
   }
 
   enum ALGO_TYPE {
     BUBBLE,
     QUICK,
-    MERGE
+    MERGE,
   }
 
   type AppConfig {
-    id: ID!,
+    _id: String,
     algoType: ALGO_TYPE,
     withVisual: Boolean,
     speed: Int,
-    array: [Int!]
+    array: [Int!],
   }
 
   type Mutation {
-    "Create new app Config."
-    createAppConfig(id: ID!, algoType: ALGO_TYPE, withVisual: Boolean, speed: Int, array: [Int!]): AppConfig
+    "Create new AppConfig"
+    createAppConfig(algoType: ALGO_TYPE, withVisual: Boolean, speed: Int, array: [Int!]): AppConfig,
   }
 `;
 
