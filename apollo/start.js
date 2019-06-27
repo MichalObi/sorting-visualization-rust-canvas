@@ -18,12 +18,13 @@ MongoClient.connect(MONGO_URL, {
   useNewUrlParser: true
 }, (err, database) => {
   if (err) return console.dir(err);
+
   console.log("Database created!");
 
   const initApolloServer = (ApolloServer, typeDefs) => {
 
     const dbInstance = database.db(dbName),
-      appConfigs = dbInstance.collection('configs'); // create collection
+      appConfigs = dbInstance.collection('configs');
 
     const prepare = o => {
       o._id = o._id.toString()

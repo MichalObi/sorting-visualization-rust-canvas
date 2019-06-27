@@ -9,9 +9,9 @@ const typeDefs = gql `
   }
 
   enum ALGO_TYPE {
-    BUBBLE,
-    QUICK,
-    MERGE,
+    bubble,
+    quick,
+    merge,
   }
 
   type AppConfig {

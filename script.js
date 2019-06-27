@@ -1,4 +1,17 @@
-const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
+import ApolloClient from 'apollo-boost';
+import gql from 'graphql-tag';
+
+const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js'),
+  client = new ApolloClient({
+    uri: 'http://localhost:4000/',
+    onError: ({
+      networkError,
+      graphQLErrors
+    }) => {
+      console.log('graphQLErrors', graphQLErrors)
+      console.log('networkError', networkError)
+    }
+  });
 
 const $algoSelect = document.getElementById('algo-type'),
   $sizeSelect = document.getElementById('size'),
@@ -46,6 +59,50 @@ const $algoSelect = document.getElementById('algo-type'),
 let sortArrays = {},
   withVisual = null,
   welcomeAnimationIntervalId = null;
+
+const getAllAppConfigs = () => {
+  client.query({
+      query: gql `
+        query {
+          getAllAppConfigs {
+            _id,
+            algoType,
+            withVisual,
+            speed
+            array
+          }
+        }`
+    })
+    .then(data => console.log('data', data))
+    .catch(data => console.log('error', data))
+};
+
+const saveAppConfig = ({
+  algoType,
+  withVisual,
+  speed,
+  array
+}) => {
+  client.mutate({
+      variables: {
+        algoType,
+        withVisual,
+        speed,
+        array
+      },
+      mutation: gql `
+  mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
+    createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
+      algoType,
+      withVisual,
+      speed
+      array
+    }
+  }`,
+    })
+    .then(data => console.log('data', data))
+    .catch(data => console.log('error', data))
+};
 
 webassembly_js.then(wasmModule => {
 
@@ -102,12 +159,16 @@ webassembly_js.then(wasmModule => {
       shuffledArray
     };
 
-    return {
+    const config = {
       algoType,
       withVisual,
       speed,
       array: shuffledArray.slice()
     };
+
+    saveAppConfig(config);
+
+    return config;
   }
 
   const prepareArrayDisplay = array =>
