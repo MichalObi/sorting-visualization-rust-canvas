@@ -63,15 +63,15 @@ let sortArrays = {},
 const getAllAppConfigs = () => {
   client.query({
       query: gql `
-        query {
-          getAllAppConfigs {
-            _id,
-            algoType,
-            withVisual,
-            speed
-            array
-          }
-        }`
+      query {
+        getAllAppConfigs {
+          _id,
+          algoType,
+          withVisual,
+          speed
+          array
+        }
+      }`
     })
     .then(data => console.log('data', data))
     .catch(data => console.log('error', data))
@@ -91,14 +91,14 @@ const saveAppConfig = ({
         array
       },
       mutation: gql `
-  mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
-    createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
-      algoType,
-      withVisual,
-      speed
-      array
-    }
-  }`,
+      mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
+        createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
+          algoType,
+          withVisual,
+          speed
+          array
+        }
+      }`,
     })
     .then(data => console.log('data', data))
     .catch(data => console.log('error', data))
@@ -224,4 +224,6 @@ webassembly_js.then(wasmModule => {
   $startBtn.addEventListener('click', sortStart);
 
   drawWelcomeMsg();
+
+  getAllAppConfigs();
 });
