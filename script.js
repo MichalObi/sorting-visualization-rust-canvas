@@ -1,5 +1,9 @@
 import ApolloClient from 'apollo-boost';
-import gql from 'graphql-tag';
+import {
+  ALL_APP_CONFIGS,
+  getAllAppConfigs,
+  saveAppConfig
+} from './apollo/client-actions.js';
 
 const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js'),
   client = new ApolloClient({
@@ -59,73 +63,6 @@ const $algoSelect = document.getElementById('algo-type'),
 let sortArrays = {},
   withVisual = null,
   welcomeAnimationIntervalId = null;
-
-const ALL_APP_CONFIGS = gql `
-  query {
-    allAppConfigs {
-      _id,
-      algoType,
-      withVisual,
-      speed
-      array
-    }
-  }`;
-
-const getAllAppConfigs = () => {
-  client.query({
-      query: ALL_APP_CONFIGS
-    })
-    .then(data => console.log('All configs:', data))
-    .catch(data => console.log('All configs error:', data))
-};
-
-const saveAppConfig = ({
-  algoType,
-  withVisual,
-  speed,
-  array
-}) => {
-  client.mutate({
-      variables: {
-        algoType,
-        withVisual,
-        speed,
-        array
-      },
-      mutation: gql `
-      mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
-        createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
-          algoType,
-          withVisual,
-          speed
-          array
-        }
-      }`,
-      update: (cache, {
-        data: {
-          createAppConfig
-        }
-      }) => {
-        const {
-          allAppConfigs
-        } = cache.readQuery({
-          query: ALL_APP_CONFIGS
-        });
-
-        cache.writeQuery({
-          query: ALL_APP_CONFIGS,
-          data: {
-            allAppConfigs: allAppConfigs.concat([createAppConfig])
-          }
-        });
-      }
-    })
-    .then(data => {
-      console.log('Saved config:', data);
-      getAllAppConfigs();
-    })
-    .catch(data => console.log('Saved config error:', data))
-};
 
 webassembly_js.then(wasmModule => {
 
