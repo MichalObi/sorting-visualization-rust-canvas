@@ -4,8 +4,8 @@ const {
 
 const typeDefs = gql `
   type Query {
-    getAllAppConfigs: [AppConfig],
-    getAppConfigById(_id: String): AppConfig,
+    allAppConfigs: [AppConfig],
+    appConfigById(_id: String): AppConfig,
   }
 
   enum ALGO_TYPE {

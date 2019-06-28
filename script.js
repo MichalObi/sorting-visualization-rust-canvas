@@ -60,21 +60,23 @@ let sortArrays = {},
   withVisual = null,
   welcomeAnimationIntervalId = null;
 
+const ALL_APP_CONFIGS = gql `
+  query {
+    allAppConfigs {
+      _id,
+      algoType,
+      withVisual,
+      speed
+      array
+    }
+  }`;
+
 const getAllAppConfigs = () => {
   client.query({
-      query: gql `
-      query {
-        getAllAppConfigs {
-          _id,
-          algoType,
-          withVisual,
-          speed
-          array
-        }
-      }`
+      query: ALL_APP_CONFIGS
     })
-    .then(data => console.log('data', data))
-    .catch(data => console.log('error', data))
+    .then(data => console.log('All configs:', data))
+    .catch(data => console.log('All configs error:', data))
 };
 
 const saveAppConfig = ({
@@ -99,9 +101,30 @@ const saveAppConfig = ({
           array
         }
       }`,
+      update: (cache, {
+        data: {
+          createAppConfig
+        }
+      }) => {
+        const {
+          allAppConfigs
+        } = cache.readQuery({
+          query: ALL_APP_CONFIGS
+        });
+
+        cache.writeQuery({
+          query: ALL_APP_CONFIGS,
+          data: {
+            allAppConfigs: allAppConfigs.concat([createAppConfig])
+          }
+        });
+      }
     })
-    .then(data => console.log('data', data))
-    .catch(data => console.log('error', data))
+    .then(data => {
+      console.log('Saved config:', data);
+      getAllAppConfigs();
+    })
+    .catch(data => console.log('Saved config error:', data))
 };
 
 webassembly_js.then(wasmModule => {

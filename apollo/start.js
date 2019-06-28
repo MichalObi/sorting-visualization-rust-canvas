@@ -33,11 +33,11 @@ MongoClient.connect(MONGO_URL, {
 
     const resolvers = {
       Query: {
-        getAppConfigById: async (root, {
+        appConfigById: async (root, {
           _id
         }) => prepare(await appConfigs.findOne(ObjectId(_id))),
 
-        getAllAppConfigs: async () =>
+        allAppConfigs: async () =>
           (await appConfigs.find({}).toArray()).map(prepare)
       },
       Mutation: {
