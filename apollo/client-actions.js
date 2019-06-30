@@ -46,7 +46,7 @@ const saveAppConfig = ({
   withVisual,
   speed,
   array
-}) => {
+}, cb) => {
   client.mutate({
       variables: {
         algoType,
@@ -76,8 +76,9 @@ const saveAppConfig = ({
       }
     })
     .then(data => {
-      console.log('Saved config:', data);
+      const configStats = cb();
       getAllAppConfigs();
+      console.log('configStats', configStats);
     })
     .catch(data => console.log('Saved config error:', data))
 };

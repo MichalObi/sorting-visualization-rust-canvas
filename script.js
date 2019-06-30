@@ -1,21 +1,10 @@
-import ApolloClient from 'apollo-boost';
 import {
   ALL_APP_CONFIGS,
   getAllAppConfigs,
   saveAppConfig
 } from './apollo/client-actions.js';
 
-const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js'),
-  client = new ApolloClient({
-    uri: 'http://localhost:4000/',
-    onError: ({
-      networkError,
-      graphQLErrors
-    }) => {
-      console.log('graphQLErrors', graphQLErrors)
-      console.log('networkError', networkError)
-    }
-  });
+const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
 
 const $algoSelect = document.getElementById('algo-type'),
   $sizeSelect = document.getElementById('size'),
@@ -62,7 +51,14 @@ const $algoSelect = document.getElementById('algo-type'),
 
 let sortArrays = {},
   withVisual = null,
-  welcomeAnimationIntervalId = null;
+  welcomeAnimationIntervalId = null,
+  configStats = null;
+
+const setConfigStats = stats => configStats = stats;
+
+const getConfigStats = () => configStats;
+
+const resetConfigStats = () => configStats = null;
 
 webassembly_js.then(wasmModule => {
 
@@ -126,7 +122,7 @@ webassembly_js.then(wasmModule => {
       array: shuffledArray.slice()
     };
 
-    saveAppConfig(config);
+    saveAppConfig(config, getConfigStats);
 
     return config;
   }
@@ -175,6 +171,11 @@ webassembly_js.then(wasmModule => {
       ctx.fillText(`Call to rust array sort ${rustArraySortTime} ms`, 5, 350);
 
       $startBtn.disabled = false;
+
+      setConfigStats({
+        jsArraySortTime,
+        rustArraySortTime
+      });
     }
   }
 
