@@ -140,6 +140,8 @@ webassembly_js.then(wasmModule => {
 
     clearInterval(welcomeAnimationIntervalId);
 
+    resetConfigStats();
+
     ctx.textAlign = 'start';
     ctx.textBaseline = 'alphabetic';
 
