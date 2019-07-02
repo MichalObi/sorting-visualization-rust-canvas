@@ -3,6 +3,11 @@ const {
 } = require('apollo-server');
 
 const {
+  MongoClient,
+  ObjectId
+} = require('mongodb');
+
+const {
   typeDefs
 } = require('./schema');
 
@@ -26,7 +31,9 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
       }) => prepare(await appConfigs.findOne(ObjectId(_id))),
 
       allAppConfigs: async () =>
-        (await appConfigs.find({}).toArray()).map(prepare)
+        (await appConfigs.find({}).sort({
+          '_id': -1
+        }).toArray()).map(prepare)
     },
     Mutation: {
       createAppConfig: async (root, args) => {
@@ -54,4 +61,5 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
 }
 
 initMongoDB()
-  .then(dbInstance => initApolloServer(ApolloServer, typeDefs, dbInstance));
+  .then(db =>
+    initApolloServer(ApolloServer, typeDefs, db.getDbInstance()));
