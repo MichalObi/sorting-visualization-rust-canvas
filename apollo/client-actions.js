@@ -33,11 +33,29 @@ mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int
   }
 }`;
 
-const getAllAppConfigs = () => {
+const saveConfigStats = ({
+  _id: appConfigId
+}, configStats) => {
+  const configStatsWithId = Object.assign({}, {
+    appConfigId
+  }, configStats);
+
+  console.log('configStatsWithId', configStatsWithId);
+};
+
+const getAllAppConfigs = configStats => {
   client.query({
       query: ALL_APP_CONFIGS
     })
-    .then(data => console.log('All configs:', data))
+    .then(res => {
+      console.log('All configs:', res);
+
+      if (configStats) {
+        const [lastAddedConfig] = res.data.allAppConfigs;
+
+        saveConfigStats(lastAddedConfig, configStats);
+      }
+    })
     .catch(data => console.log('All configs error:', data))
 };
 
@@ -46,7 +64,7 @@ const saveAppConfig = ({
   withVisual,
   speed,
   array
-}, cb) => {
+}, getConfigStatsCb) => {
   client.mutate({
       variables: {
         algoType,
@@ -75,11 +93,7 @@ const saveAppConfig = ({
         });
       }
     })
-    .then(data => {
-      const configStats = cb();
-      getAllAppConfigs();
-      console.log('configStats', configStats);
-    })
+    .then(() => getAllAppConfigs(getConfigStatsCb()))
     .catch(data => console.log('Saved config error:', data))
 };
 

@@ -1,6 +1,5 @@
 const {
-  MongoClient,
-  ObjectId
+  MongoClient
 } = require('mongodb');
 
 // class just for some later tests

@@ -32,7 +32,7 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
 
       allAppConfigs: async () =>
         (await appConfigs.find({}).sort({
-          '_id': -1
+          '_id': -1 // order by inseration time
         }).toArray()).map(prepare)
     },
     Mutation: {
