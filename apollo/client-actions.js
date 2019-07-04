@@ -13,8 +13,8 @@ const client = new ApolloClient({
 });
 
 const ALL_APP_CONFIGS = gql `
-  query {
-    allAppConfigs {
+  query allAppConfigs($limit: Int) {
+    allAppConfigs(limit: $limit) {
       _id,
       algoType,
       withVisual,
@@ -43,9 +43,12 @@ const saveConfigStats = ({
   console.log('configStatsWithId', configStatsWithId);
 };
 
-const getAllAppConfigs = configStats => {
+const getAllAppConfigs = (configStats, limit = 0) => {
   client.query({
-      query: ALL_APP_CONFIGS
+      query: ALL_APP_CONFIGS,
+      variables: {
+        limit
+      }
     })
     .then(res => {
       console.log('All configs:', res);
@@ -82,18 +85,24 @@ const saveAppConfig = ({
         const {
           allAppConfigs
         } = cache.readQuery({
-          query: ALL_APP_CONFIGS
+          query: ALL_APP_CONFIGS,
+          variables: {
+            limit: 0
+          }
         });
 
         cache.writeQuery({
           query: ALL_APP_CONFIGS,
+          variables: {
+            limit: 0
+          },
           data: {
             allAppConfigs: allAppConfigs.concat([createAppConfig])
           }
         });
       }
     })
-    .then(() => getAllAppConfigs(getConfigStatsCb()))
+    .then(() => getAllAppConfigs(getConfigStatsCb(), 1))
     .catch(data => console.log('Saved config error:', data))
 };
 

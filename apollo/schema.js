@@ -4,7 +4,7 @@ const {
 
 const typeDefs = gql `
   type Query {
-    allAppConfigs: [AppConfig],
+    allAppConfigs(limit: Int): [AppConfig],
     appConfigById(_id: String): AppConfig,
   }
 

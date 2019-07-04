@@ -30,8 +30,10 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
         _id
       }) => prepare(await appConfigs.findOne(ObjectId(_id))),
 
-      allAppConfigs: async () =>
-        (await appConfigs.find({}).sort({
+      allAppConfigs: async (root, {
+          limit
+        }) =>
+        (await appConfigs.find({}).limit(limit).sort({
           '_id': -1 // order by inseration time
         }).toArray()).map(prepare)
     },
