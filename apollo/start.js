@@ -17,7 +17,8 @@ const {
 
 const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
 
-  const appConfigs = dbInstance.collection('configs');
+  const appConfigs = dbInstance.collection('configs'),
+    appStats = dbInstance.collection('stats');
 
   const prepare = o => {
     o._id = o._id.toString()
@@ -46,6 +47,16 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
         return prepare(await appConfigs.findOne({
           _id: insertedIds['0']
         }));
+      },
+
+      createConfigStats: async (root, args) => {
+        const {
+          insertedIds
+        } = await appStats.insert(args);
+
+        return prepare(await appStats.findOne({
+          _id: insertedIds['0']
+        }));
       }
     }
   }
@@ -57,9 +68,7 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
 
   server.listen().then(({
     url
-  }) => {
-    console.log(`Server ready at ${url}`);
-  });
+  }) => console.log(`Server ready at ${url}`));
 }
 
 initMongoDB()

@@ -25,14 +25,14 @@ const typeDefs = gql `
   type ConfigStats {
     _id: String,
     appConfigId: String,
-    jsArraySortTime: Int,
-    rustArraySortTime: Int
+    jsArraySortTime: String,
+    rustArraySortTime: String,
   }
 
   type Mutation {
     "Create new AppConfig"
     createAppConfig(algoType: ALGO_TYPE, withVisual: Boolean, speed: Int, array: [Int!]): AppConfig,
-    createConfigStats(_id: String, jsArraySortTime: Int, rustArraySortTime: Int): ConfigStats
+    createConfigStats(_id: String, appConfigId:String, jsArraySortTime: String, rustArraySortTime: String): ConfigStats,
   }
 `;
 

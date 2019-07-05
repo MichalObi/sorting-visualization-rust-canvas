@@ -19,36 +19,58 @@ const ALL_APP_CONFIGS = gql `
       algoType,
       withVisual,
       speed
-      array
+      array,
     }
   }`;
 
 const CREATE_APP_CONFIG = gql `
 mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
   createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
+    _id,
     algoType,
     withVisual,
     speed
-    array
+    array,
   }
 }`;
+
+const CREATE_CONFIG_STATS = gql `
+mutation createConfigStats($appConfigId:String, $jsArraySortTime: String, $rustArraySortTime: String){
+  createConfigStats(appConfigId: $appConfigId, jsArraySortTime:$jsArraySortTime, rustArraySortTime:$rustArraySortTime) {
+    _id,
+    appConfigId,
+    jsArraySortTime,
+    rustArraySortTime,
+  }
+}
+`;
 
 const saveConfigStats = ({
   _id: appConfigId
 }, configStats) => {
-  const configStatsWithId = Object.assign({}, {
-    appConfigId
-  }, configStats);
+  const {
+    jsArraySortTime,
+    rustArraySortTime
+  } = configStats;
 
-  console.log('configStatsWithId', configStatsWithId);
+  client.mutate({
+      variables: {
+        appConfigId,
+        jsArraySortTime,
+        rustArraySortTime,
+      },
+      mutation: CREATE_CONFIG_STATS,
+    })
+    .then(res => console.log('Saved Config', res))
+    .catch(data => console.log('Saved Config error:', data))
 };
 
 const getAllAppConfigs = (configStats, limit = 0) => {
   client.query({
       query: ALL_APP_CONFIGS,
       variables: {
-        limit
-      }
+        limit,
+      },
     })
     .then(res => {
       console.log('All configs:', res);
@@ -66,19 +88,19 @@ const saveAppConfig = ({
   algoType,
   withVisual,
   speed,
-  array
+  array,
 }, getConfigStatsCb) => {
   client.mutate({
       variables: {
         algoType,
         withVisual,
         speed,
-        array
+        array,
       },
       mutation: CREATE_APP_CONFIG,
       update: (cache, {
         data: {
-          createAppConfig
+          createAppConfig,
         }
       }) => {
 
@@ -87,17 +109,17 @@ const saveAppConfig = ({
         } = cache.readQuery({
           query: ALL_APP_CONFIGS,
           variables: {
-            limit: 0
+            limit: 0,
           }
         });
 
         cache.writeQuery({
           query: ALL_APP_CONFIGS,
           variables: {
-            limit: 0
+            limit: 0,
           },
           data: {
-            allAppConfigs: allAppConfigs.concat([createAppConfig])
+            allAppConfigs: allAppConfigs.concat([createAppConfig]),
           }
         });
       }
@@ -109,5 +131,5 @@ const saveAppConfig = ({
 export {
   ALL_APP_CONFIGS,
   getAllAppConfigs,
-  saveAppConfig
+  saveAppConfig,
 }

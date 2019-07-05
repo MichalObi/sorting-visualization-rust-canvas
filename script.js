@@ -175,8 +175,8 @@ webassembly_js.then(wasmModule => {
       $startBtn.disabled = false;
 
       setConfigStats({
-        jsArraySortTime,
-        rustArraySortTime
+        jsArraySortTime: jsArraySortTime.toString(),
+        rustArraySortTime: rustArraySortTime.toString()
       });
     }
   }
