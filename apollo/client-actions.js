@@ -23,6 +23,16 @@ const ALL_APP_CONFIGS = gql `
     }
   }`;
 
+const ALL_APP_CONFIGS_STATS = gql `
+    query allAppConfigsStats($limit: Int) {
+      allAppConfigsStats(limit: $limit) {
+        _id,
+        appConfigId,
+        jsArraySortTime,
+        rustArraySortTime,
+      }
+    }`;
+
 const CREATE_APP_CONFIG = gql `
 mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
   createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
@@ -61,8 +71,7 @@ const saveConfigStats = ({
       },
       mutation: CREATE_CONFIG_STATS,
     })
-    .then(res => console.log('Saved Config', res))
-    .catch(data => console.log('Saved Config error:', data))
+    .catch(data => console.log('Saved stats error:', data))
 };
 
 const getAllAppConfigs = (configStats, limit = 0) => {
@@ -73,8 +82,7 @@ const getAllAppConfigs = (configStats, limit = 0) => {
       },
     })
     .then(res => {
-      console.log('All configs:', res);
-
+      console.log('App all configs', res);
       if (configStats) {
         const [lastAddedConfig] = res.data.allAppConfigs;
 
@@ -83,6 +91,17 @@ const getAllAppConfigs = (configStats, limit = 0) => {
     })
     .catch(data => console.log('All configs error:', data))
 };
+
+const getAllAppConfigsStats = (limit = 0) => {
+  client.query({
+      query: ALL_APP_CONFIGS_STATS,
+      variables: {
+        limit,
+      },
+    })
+    .then(res => console.log('App all configs stats', res))
+    .catch(data => console.log('All configs stats error:', data))
+}
 
 const saveAppConfig = ({
   algoType,
@@ -129,7 +148,7 @@ const saveAppConfig = ({
 };
 
 export {
-  ALL_APP_CONFIGS,
   getAllAppConfigs,
+  getAllAppConfigsStats,
   saveAppConfig,
 }

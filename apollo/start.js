@@ -35,7 +35,18 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
           limit
         }) =>
         (await appConfigs.find({}).limit(limit).sort({
-          '_id': -1 // order by inseration time
+          '_id': -1
+        }).toArray()).map(prepare),
+
+      appConfigStatsById: async (root, {
+        _id
+      }) => prepare(await appStats.findOne(ObjectId(_id))),
+
+      allAppConfigsStats: async (root, {
+          limit
+        }) =>
+        (await appStats.find({}).limit(limit).sort({
+          '_id': -1
         }).toArray()).map(prepare)
     },
     Mutation: {

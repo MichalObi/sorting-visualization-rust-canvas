@@ -3,11 +3,6 @@ const {
 } = require('apollo-server');
 
 const typeDefs = gql `
-  type Query {
-    allAppConfigs(limit: Int): [AppConfig],
-    appConfigById(_id: String): AppConfig,
-  }
-
   enum ALGO_TYPE {
     bubble,
     quick,
@@ -29,9 +24,17 @@ const typeDefs = gql `
     rustArraySortTime: String,
   }
 
+  type Query {
+    allAppConfigs(limit: Int): [AppConfig],
+    appConfigById(_id: String): AppConfig,
+    allAppConfigsStats(limit: Int): [ConfigStats],
+    appConfigStatsById(_id: String): ConfigStats,
+  }
+
   type Mutation {
     "Create new AppConfig"
     createAppConfig(algoType: ALGO_TYPE, withVisual: Boolean, speed: Int, array: [Int!]): AppConfig,
+    "Create new AppConfig stats"
     createConfigStats(_id: String, appConfigId:String, jsArraySortTime: String, rustArraySortTime: String): ConfigStats,
   }
 `;

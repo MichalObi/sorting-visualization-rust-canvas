@@ -1,6 +1,6 @@
 import {
-  ALL_APP_CONFIGS,
   getAllAppConfigs,
+  getAllAppConfigsStats,
   saveAppConfig
 } from './apollo/client-actions.js';
 
@@ -189,4 +189,6 @@ webassembly_js.then(wasmModule => {
   drawWelcomeMsg();
 
   getAllAppConfigs();
+
+  getAllAppConfigsStats();
 });
