@@ -18,7 +18,7 @@ const {
 const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
 
   const appConfigs = dbInstance.collection('configs'),
-    appStats = dbInstance.collection('stats');
+    appStats = dbInstance.collection('configsStats');
 
   const prepare = o => {
     o._id = o._id.toString()

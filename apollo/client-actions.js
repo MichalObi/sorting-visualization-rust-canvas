@@ -70,7 +70,33 @@ const saveConfigStats = ({
         rustArraySortTime,
       },
       mutation: CREATE_CONFIG_STATS,
+      update: (cache, {
+        data: {
+          createConfigStats,
+        }
+      }) => {
+
+        const {
+          allAppConfigsStats
+        } = cache.readQuery({
+          query: ALL_APP_CONFIGS_STATS,
+          variables: {
+            limit: 0,
+          }
+        });
+
+        cache.writeQuery({
+          query: ALL_APP_CONFIGS_STATS,
+          variables: {
+            limit: 0,
+          },
+          data: {
+            allAppConfigsStats: allAppConfigsStats.concat([createConfigStats]),
+          }
+        });
+      }
     })
+    .then(() => getAllAppConfigsStats())
     .catch(data => console.log('Saved stats error:', data))
 };
 
@@ -80,6 +106,7 @@ const getAllAppConfigs = (configStats, limit = 0) => {
       variables: {
         limit,
       },
+      fetchPolicy: 'network-only'
     })
     .then(res => {
       console.log('App all configs', res);
@@ -98,6 +125,7 @@ const getAllAppConfigsStats = (limit = 0) => {
       variables: {
         limit,
       },
+      fetchPolicy: 'network-only'
     })
     .then(res => console.log('App all configs stats', res))
     .catch(data => console.log('All configs stats error:', data))
