@@ -24,36 +24,50 @@ const ALL_APP_CONFIGS = gql `
   }`;
 
 const ALL_APP_CONFIGS_STATS = gql `
-    query allAppConfigsStats($limit: Int) {
-      allAppConfigsStats(limit: $limit) {
-        _id,
-        appConfigId,
-        jsArraySortTime,
-        rustArraySortTime,
-      }
-    }`;
+  query allAppConfigsStats($limit: Int) {
+    allAppConfigsStats(limit: $limit) {
+      _id,
+      appConfigId,
+      jsArraySortTime,
+      rustArraySortTime,
+    }
+  }`;
+
+const ALL_APP_CONFIGS_WITH_STATS = gql `
+  query allAppConfigsWithStats($limit: Int) {
+    allAppConfigsWithStats(limit: $limit) {
+      _id,
+      appConfigId,
+      algoType,
+      withVisual,
+      speed
+      array,
+      jsArraySortTime,
+      rustArraySortTime,
+    }
+  }`;
 
 const CREATE_APP_CONFIG = gql `
-mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
-  createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
-    _id,
-    algoType,
-    withVisual,
-    speed
-    array,
-  }
-}`;
+  mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
+    createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
+      _id,
+      algoType,
+      withVisual,
+      speed
+      array,
+    }
+  }`;
 
 const CREATE_CONFIG_STATS = gql `
-mutation createConfigStats($appConfigId:String, $jsArraySortTime: String, $rustArraySortTime: String){
-  createConfigStats(appConfigId: $appConfigId, jsArraySortTime:$jsArraySortTime, rustArraySortTime:$rustArraySortTime) {
-    _id,
-    appConfigId,
-    jsArraySortTime,
-    rustArraySortTime,
+  mutation createConfigStats($appConfigId:String, $jsArraySortTime: String, $rustArraySortTime: String){
+    createConfigStats(appConfigId: $appConfigId, jsArraySortTime:$jsArraySortTime, rustArraySortTime:$rustArraySortTime) {
+      _id,
+      appConfigId,
+      jsArraySortTime,
+      rustArraySortTime,
+    }
   }
-}
-`;
+  `;
 
 const saveConfigStats = ({
   _id: appConfigId
@@ -98,6 +112,18 @@ const saveConfigStats = ({
     })
     .then(() => getAllAppConfigsStats())
     .catch(data => console.log('Saved stats error:', data))
+};
+
+const getAllAppConfigsWithStats = (limit = 0) => {
+  client.query({
+      query: ALL_APP_CONFIGS_WITH_STATS,
+      variables: {
+        limit,
+      },
+      fetchPolicy: 'network-only'
+    })
+    .then(res => console.log('App all configs with stats', res))
+    .catch(data => console.log('App all configs with stats error:', data))
 };
 
 const getAllAppConfigs = (configStats, limit = 0) => {
@@ -178,5 +204,6 @@ const saveAppConfig = ({
 export {
   getAllAppConfigs,
   getAllAppConfigsStats,
+  getAllAppConfigsWithStats,
   saveAppConfig,
 }

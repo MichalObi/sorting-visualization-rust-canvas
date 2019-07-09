@@ -1,7 +1,8 @@
 import {
   getAllAppConfigs,
   getAllAppConfigsStats,
-  saveAppConfig
+  saveAppConfig,
+  getAllAppConfigsWithStats
 } from './apollo/client-actions.js';
 
 const webassembly_js = import('./rust-sorting/pkg/rust_sorting.js');
@@ -188,7 +189,5 @@ webassembly_js.then(wasmModule => {
 
   drawWelcomeMsg();
 
-  getAllAppConfigs();
-
-  getAllAppConfigsStats();
+  getAllAppConfigsWithStats();
 });

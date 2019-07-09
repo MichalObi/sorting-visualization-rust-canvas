@@ -1,3 +1,7 @@
+import {
+  getAllAppConfigsWithStats
+} from './apollo/client-actions.js';
+
 const ctx = document.getElementById('canvas').getContext('2d'),
   $startBtn = document.getElementById('start'),
   canvasWidth = 800,
@@ -67,6 +71,7 @@ const drawState = (currentState, isFinal) => {
 
     if (isFinal) {
       drawFinishBlink(xPosition, yPosition);
+      getAllAppConfigsWithStats();
     } else {
       ctx.strokeStyle = itemColor;
       ctx.stroke();

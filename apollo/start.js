@@ -32,23 +32,33 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
       }) => prepare(await appConfigs.findOne(ObjectId(_id))),
 
       allAppConfigs: async (root, {
-          limit
-        }) =>
-        (await appConfigs.find({}).limit(limit).sort({
-          '_id': -1
-        }).toArray()).map(prepare),
+        limit
+      }) => (await appConfigs.find({}).limit(limit).sort({
+        '_id': -1
+      }).toArray()).map(prepare),
 
       appConfigStatsById: async (root, {
         _id
       }) => prepare(await appStats.findOne(ObjectId(_id))),
 
       allAppConfigsStats: async (root, {
-          limit
-        }) =>
-        (await appStats.find({}).limit(limit).sort({
-          '_id': -1
-        }).toArray()).map(prepare)
+        limit
+      }) => (await appStats.find({}).limit(limit).sort({
+        '_id': -1
+      }).toArray()).map(prepare),
+
+      allAppConfigsWithStats: async (root, {
+        limit
+      }) => (await appConfigs.aggregate([{
+        $lookup: {
+          from: 'configsStats',
+          localField: '_id',
+          foreignField: 'appConfigId',
+          as: 'appConfigId'
+        }
+      }]).toArray()).map(prepare)
     },
+
     Mutation: {
       createAppConfig: async (root, args) => {
         const {

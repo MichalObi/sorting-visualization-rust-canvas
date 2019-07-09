@@ -24,11 +24,23 @@ const typeDefs = gql `
     rustArraySortTime: String,
   }
 
+  type AppConfigWithStats {
+    _id: String,
+    appConfigId: String,
+    algoType: ALGO_TYPE,
+    withVisual: Boolean,
+    speed: Int,
+    array: [Int!],
+    jsArraySortTime: String,
+    rustArraySortTime: String,
+  }
+
   type Query {
     allAppConfigs(limit: Int): [AppConfig],
     appConfigById(_id: String): AppConfig,
     allAppConfigsStats(limit: Int): [ConfigStats],
     appConfigStatsById(_id: String): ConfigStats,
+    allAppConfigsWithStats(limit: Int): [AppConfigWithStats],
   }
 
   type Mutation {
