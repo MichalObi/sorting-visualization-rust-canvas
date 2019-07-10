@@ -31,8 +31,7 @@ const typeDefs = gql `
     withVisual: Boolean,
     speed: Int,
     array: [Int!],
-    jsArraySortTime: String,
-    rustArraySortTime: String,
+    stats: [ConfigStats]
   }
 
   type Query {

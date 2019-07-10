@@ -49,14 +49,24 @@ const initApolloServer = (ApolloServer, typeDefs, dbInstance) => {
 
       allAppConfigsWithStats: async (root, {
         limit
-      }) => (await appConfigs.aggregate([{
-        $lookup: {
-          from: 'configsStats',
-          localField: '_id',
-          foreignField: 'appConfigId',
-          as: 'appConfigId'
-        }
-      }]).toArray()).map(prepare)
+      }) => {
+        return await appConfigs.aggregate([{
+            "$addFields": {
+              "appConfigId": {
+                "$toString": "$_id"
+              }
+            }
+          },
+          {
+            $lookup: {
+              from: 'configsStats',
+              localField: 'appConfigId',
+              foreignField: 'appConfigId',
+              as: 'stats'
+            }
+          }
+        ]).toArray();
+      }
     },
 
     Mutation: {

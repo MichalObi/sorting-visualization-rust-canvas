@@ -42,13 +42,17 @@ const ALL_APP_CONFIGS_WITH_STATS = gql `
       withVisual,
       speed
       array,
-      jsArraySortTime,
-      rustArraySortTime,
+      stats {
+        _id,
+        appConfigId,
+        jsArraySortTime,
+        rustArraySortTime,
+      }
     }
   }`;
 
 const CREATE_APP_CONFIG = gql `
-  mutation CreateAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
+  mutation createAppConfig($algoType: ALGO_TYPE, $withVisual: Boolean, $speed: Int, $array: [Int!]){
     createAppConfig(algoType: $algoType, withVisual: $withVisual, speed: $speed, array: $array) {
       _id,
       algoType,
@@ -84,33 +88,33 @@ const saveConfigStats = ({
         rustArraySortTime,
       },
       mutation: CREATE_CONFIG_STATS,
-      update: (cache, {
-        data: {
-          createConfigStats,
-        }
-      }) => {
-
-        const {
-          allAppConfigsStats
-        } = cache.readQuery({
-          query: ALL_APP_CONFIGS_STATS,
-          variables: {
-            limit: 0,
-          }
-        });
-
-        cache.writeQuery({
-          query: ALL_APP_CONFIGS_STATS,
-          variables: {
-            limit: 0,
-          },
-          data: {
-            allAppConfigsStats: allAppConfigsStats.concat([createConfigStats]),
-          }
-        });
-      }
+      // update: (cache, {
+      //   data: {
+      //     createConfigStats,
+      //   }
+      // }) => {
+      //
+      //   const {
+      //     allAppConfigsStats
+      //   } = cache.readQuery({
+      //     query: ALL_APP_CONFIGS_STATS,
+      //     variables: {
+      //       limit: 0,
+      //     }
+      //   });
+      //
+      //   cache.writeQuery({
+      //     query: ALL_APP_CONFIGS_STATS,
+      //     variables: {
+      //       limit: 0,
+      //     },
+      //     data: {
+      //       allAppConfigsStats: allAppConfigsStats.concat([createConfigStats]),
+      //     }
+      //   });
+      // }
     })
-    .then(() => getAllAppConfigsStats())
+    .then((res) => console.log('saved stats', res))
     .catch(data => console.log('Saved stats error:', data))
 };
 
@@ -171,33 +175,33 @@ const saveAppConfig = ({
         array,
       },
       mutation: CREATE_APP_CONFIG,
-      update: (cache, {
-        data: {
-          createAppConfig,
-        }
-      }) => {
-
-        const {
-          allAppConfigs
-        } = cache.readQuery({
-          query: ALL_APP_CONFIGS,
-          variables: {
-            limit: 0,
-          }
-        });
-
-        cache.writeQuery({
-          query: ALL_APP_CONFIGS,
-          variables: {
-            limit: 0,
-          },
-          data: {
-            allAppConfigs: allAppConfigs.concat([createAppConfig]),
-          }
-        });
-      }
+      // update: (cache, {
+      //   data: {
+      //     createAppConfig,
+      //   }
+      // }) => {
+      //
+      //   const {
+      //     allAppConfigs
+      //   } = cache.readQuery({
+      //     query: ALL_APP_CONFIGS,
+      //     variables: {
+      //       limit: 0,
+      //     }
+      //   });
+      //
+      //   cache.writeQuery({
+      //     query: ALL_APP_CONFIGS,
+      //     variables: {
+      //       limit: 0,
+      //     },
+      //     data: {
+      //       allAppConfigs: allAppConfigs.concat([createAppConfig]),
+      //     }
+      //   });
+      // }
     })
-    .then(() => getAllAppConfigs(getConfigStatsCb(), 1))
+    .then((res) => getAllAppConfigs(getConfigStatsCb(), 1))
     .catch(data => console.log('Saved config error:', data))
 };
 
